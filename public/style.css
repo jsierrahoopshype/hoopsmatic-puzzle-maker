@@ -90,27 +90,10 @@ button { font: inherit; color: inherit; }
 .diff.Easy { color: #c9f0a7; border-color: #5f8f3a; } .diff.Medium { color: #ffe38a; border-color: #8f7a2a; }
 .diff.Hard { color: #ffb38a; border-color: #8f4f2a; } .diff.Expert { color: #ff9b9b; border-color: #8f2a2a; }
 
-/* The board: solved rows, then the 4x4 grid. Group colors: Connections' order, Dream Team tones. */
+/* The board: solved rows, then the 4x4 grid. Group colors: Connections' order, Dream Team tones.
+   Design pass (Jorge, Nov 13, 2026): one headshot frame everywhere (.ph), no circles. */
 :root { --c-yellow: #f5d26b; --c-green: #8fd18a; --c-blue: #8fb6f2; --c-purple: #c39bea; }
 .solved { display: flex; flex-direction: column; gap: 6px; margin: 0 0 6px; }
-.grow { border-radius: 10px; padding: 10px 12px; color: #121225; }
-.grow.yellow { background: var(--c-yellow); } .grow.green { background: var(--c-green); } .grow.blue { background: var(--c-blue); } .grow.purple { background: var(--c-purple); }
-.grow h3 { margin: 0 0 6px; font-family: var(--oswald); font-size: 15px; letter-spacing: 1px; text-transform: uppercase; line-height: 1.25; }
-.grow ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 10px; }
-.grow li { font-size: 13px; line-height: 1.3; }
-.grow li a { color: #121225; font-weight: 700; }
-.grow li .why { display: block; font-size: 11px; opacity: .8; }
-.grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-.tile { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 4px; min-height: 104px; padding: 6px 3px 6px;
-  border-radius: 10px; border: 1px solid var(--line2); background: var(--deep); color: var(--text); cursor: pointer; text-align: center; -webkit-tap-highlight-color: transparent; }
-.tile .nm { font-size: 12px; line-height: 1.15; font-weight: 600; word-break: break-word; }
-.tile.sel { background: #3a3a6a; border-color: var(--gold); color: #fff; }
-.tile.shake { animation: shake .35s; }
-@keyframes shake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
-.head { width: 56px; height: 56px; border-radius: 50%; background: var(--head-bg); overflow: hidden; flex: 0 0 auto; display: flex; align-items: flex-end; justify-content: center; }
-.head img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
-.head.nba img { object-fit: cover; transform: scale(1.25); transform-origin: center 30%; }
-.head.sm { width: 34px; height: 34px; }
 .mist { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 12px 0 2px; color: var(--text2); font-size: 14px; }
 .mist i { width: 12px; height: 12px; border-radius: 50%; background: var(--gold); display: inline-block; }
 .mist i.used { background: var(--line2); }
@@ -138,7 +121,6 @@ button { font: inherit; color: inherit; }
 .slot .label { font-weight: 700; color: #fff; margin: 0 0 8px; }
 .chiprow { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 8px; }
 .pchip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 6px 3px 3px; border-radius: 999px; background: #1a1a3e; border: 1px solid var(--line2); font-size: 13px; }
-.pchip .head { width: 26px; height: 26px; }
 .pchip button { border: 0; background: none; color: var(--muted); cursor: pointer; font-size: 16px; line-height: 1; padding: 0 2px; min-width: 24px; min-height: 24px; }
 .pchip.bad { border-color: var(--red); }
 .search { width: 100%; min-height: 46px; border: 1px solid var(--line2); border-radius: 8px; padding: 0 12px; font: inherit; background: #0b0b20; color: #fff; }
@@ -164,4 +146,56 @@ button { font: inherit; color: inherit; }
 .how { padding: 4px 2px; }
 .app-footer { margin-top: 18px; text-align: center; color: var(--muted); font-size: 13px; }
 .app-footer a { color: var(--text2); }
-@media (min-width: 520px) { .tile { min-height: 120px; } .head { width: 66px; height: 66px; } .tile .nm { font-size: 13px; } }
+
+/* ---------- The headshot frame (.ph) ----------
+   Light-grey panel at the NBA.com cutout's own aspect (260x190); the cutout
+   sits bottom-aligned and never scales past the panel, so every player is
+   head to shoulders at the same size and nothing is cut at the top. */
+.ph { position: relative; display: block; width: 100%; aspect-ratio: 260 / 190; background: var(--head-bg); overflow: hidden; }
+.ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: center bottom; display: block; }
+.ph.nophoto { background: linear-gradient(160deg, #23234f, #15153a); display: flex; align-items: center; justify-content: center; padding: 4px; }
+.ph.mini { width: 100%; border-radius: 6px; }
+.ph.chip { width: 36px; flex: 0 0 auto; border-radius: 4px; }
+.ph.sm { width: 52px; flex: 0 0 auto; border-radius: 5px; }
+.ph.chip.nophoto, .ph.sm.nophoto { display: none; }
+
+/* ---------- Tiles ---------- */
+.grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 8px; }
+.tile { position: relative; display: flex; flex-direction: column; padding: 0; overflow: hidden; border-radius: 10px; border: 2px solid var(--line2);
+  background: var(--deep); color: var(--text); cursor: pointer; text-align: center; -webkit-tap-highlight-color: transparent;
+  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease, background-color .12s ease; }
+.tile .ph { flex: 0 0 auto; }
+.tile .ph.nophoto { flex: 1 1 auto; aspect-ratio: auto; min-height: 0; }
+.tile .ph.nophoto + .nm { display: none; }
+.tile:has(.ph.nophoto) { min-height: 0; }
+/* Name: first name small, last name bold; a fixed two-line block so every tile is the same height. */
+.nm { display: flex; flex-direction: column; justify-content: center; gap: 1px; height: 2.6em; padding: 3px 3px 4px; font-size: 13px; line-height: 1.12; overflow: hidden; }
+.nm .fn { font-size: 10.5px; color: var(--text2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nm .ln { font-weight: 800; color: #fff; overflow-wrap: anywhere; }
+.nm .ln.l { font-size: 12px; } .nm .ln.xl { font-size: 10.5px; }
+.nm.in { height: auto; } .nm.in .fn { font-size: 12px; white-space: normal; } .nm.in .ln { font-size: 15px; }
+/* Selected: gold border, a slight lift and a gold-tinted panel. */
+.tile.sel { border-color: var(--gold); background: #2c2b52; transform: translateY(-3px); box-shadow: 0 6px 14px rgba(0,0,0,.45), 0 0 0 1px var(--gold); }
+.tile.sel .ph::after { content: ''; position: absolute; inset: 0; background: rgba(255, 215, 0, .22); }
+.tile.sel .nm .ln { color: var(--gold); }
+.tile:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.tile.shake { animation: shake .35s; }
+@keyframes shake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+@media (prefers-reduced-motion: reduce) { .tile { transition: none; } .tile.sel { transform: none; } .tile.shake { animation: none; } }
+@media (min-width: 560px) { .grid { gap: 10px; } .nm { font-size: 15px; } .nm .fn { font-size: 12px; } .nm .ln.l { font-size: 14px; } .nm .ln.xl { font-size: 12px; } }
+
+/* ---------- Solved group bars ---------- */
+.grow { border-radius: 12px; padding: 10px; color: #121225; }
+.grow.yellow { background: var(--c-yellow); } .grow.green { background: var(--c-green); } .grow.blue { background: var(--c-blue); } .grow.purple { background: var(--c-purple); }
+.grow .faces { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin: 0 0 8px; }
+.grow .faces .ph { box-shadow: 0 1px 0 rgba(0,0,0,.12); }
+.grow .faces .ph.nophoto .nm.in .ln { color: #fff; font-size: 12px; } .grow .faces .ph.nophoto .nm.in .fn { font-size: 10px; }
+.grow h3 { margin: 0 0 4px; font-family: var(--oswald); font-size: 16px; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2; }
+.grow ul { list-style: none; margin: 0; padding: 0; }
+.grow li { font-size: 13px; line-height: 1.35; }
+.grow li a, .grow li b { color: #121225; font-weight: 800; }
+.grow li .why { opacity: .8; }
+
+/* Maker lists and chips use the same frame, small. */
+.pchip { padding: 3px 6px 3px 3px; }
+.picklist button { gap: 10px; }

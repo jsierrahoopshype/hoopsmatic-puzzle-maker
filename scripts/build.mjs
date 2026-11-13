@@ -15,10 +15,17 @@ import { randomBytes } from 'node:crypto';
 import { compactData } from './lib/data.mjs';
 import { buildCatalog, generatePuzzle, boardOrder } from '../public/core.js';
 import { fetchPubkey, lock } from './lib/lock.mjs';
+import { checkHeads, nbaId } from './lib/heads.mjs';
 
 const ROOT = new URL('..', import.meta.url).pathname;
 const L = JSON.parse(readFileSync(ROOT + 'rules/launch.json', 'utf8'));
 const data = compactData();
+// Players whose NBA.com photo is the grey silhouette (or missing) get no head:
+// a name-only tile (scripts/lib/heads.mjs).
+const heads = await checkHeads(data.players.map((p) => p[2]).filter(Boolean));
+let blank = 0;
+for (const p of data.players) if (p[2] && heads[nbaId(p[2])] === 0) { p[2] = 0; blank++; }
+console.log(`headshots: ${blank} silhouettes or missing, name-only`);
 writeFileSync(ROOT + 'public/data.json', JSON.stringify(data));
 writeFileSync(ROOT + 'public/config.json', JSON.stringify({ launch: L.launch, badges: L.badges || null }) + '\n');
 console.log(`data.json: ${data.players.length} players, as of ${data.asOf}`);

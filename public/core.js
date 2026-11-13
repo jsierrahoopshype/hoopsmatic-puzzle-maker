@@ -212,12 +212,16 @@ export function pageUrl(page) {
   return page.startsWith('s:') ? `https://hoopsmatic.com/salary-season-finder/player/${page.slice(2)}/`
     : `https://hoopsmatic.com/nba-career-map/player/${page.slice(2)}.html`;
 }
-// Headshot URL (Deep Cut's sources): "f:<file>" HoopsMatic face-fill set,
-// "n:<id>" NBA.com. null = show nothing (never initials).
+// Headshot URL. One frame for every player (Jorge, Nov 13, 2026): NBA.com's
+// 260x190 head-to-shoulders cutout, the same scale and position for everyone,
+// bottom-aligned. Deep Cut's sources are "n:<NBA id>" (NBA.com) and
+// "f:<NBA id>-<slug>" (the HoopsMatic face-fill set, a face-only crop made for
+// circles); the face-fill file carries the NBA id, so both use the NBA.com
+// cutout. null = no photo: a name-only tile (never initials). Players whose
+// NBA.com photo is the grey silhouette have no head in data.json (build).
 export function headUrl(head) {
-  if (!head) return null;
-  return head.startsWith('n:') ? `https://cdn.nba.com/headshots/nba/latest/260x190/${head.slice(2)}.png`
-    : `https://jsierrahoopshype.github.io/nba-headshots/players/headshots/face-fill/${head.replace(/^f:/, '')}.webp`;
+  const m = head && String(head).match(/^(?:n:(\d+)|f:(\d+)-)/);
+  return m ? `https://cdn.nba.com/headshots/nba/latest/260x190/${m[1] || m[2]}.png` : null;
 }
 
 // The evidence a group can rest on for this player (1980-81 on, not weak),
