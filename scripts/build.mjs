@@ -1,6 +1,7 @@
 // Build everything the page and the server read, into public/:
 //   data.json     compact player facts (format: top of public/core.js)
 //   config.json   { launch, badges } from rules/launch.json
+//   <date>/index.html and sitemap-state.json (scripts/pages.mjs)
 //   daily/<date>.lock  one data-built Daily per day from rules/launch.json
 //                 start, encrypted for the server (scripts/lib/lock.mjs).
 // Existing locks are never rewritten (a published day stays as it was).
@@ -16,6 +17,7 @@ import { compactData } from './lib/data.mjs';
 import { buildCatalog, generatePuzzle, boardOrder } from '../public/core.js';
 import { fetchPubkey, lock } from './lib/lock.mjs';
 import { checkHeads, nbaId } from './lib/heads.mjs';
+import { buildPages } from './pages.mjs';
 
 const ROOT = new URL('..', import.meta.url).pathname;
 const L = JSON.parse(readFileSync(ROOT + 'rules/launch.json', 'utf8'));
@@ -31,7 +33,7 @@ writeFileSync(ROOT + 'public/config.json', JSON.stringify({ launch: L.launch, ba
 console.log(`data.json: ${data.players.length} players, as of ${data.asOf}`);
 
 const pub = await fetchPubkey();
-if (!pub) { console.log('No server key yet (rules/pubkey.json, or the live /puzzle-maker/api/pubkey): no Daily locks built.'); process.exit(0); }
+if (!pub) { console.log('No server key yet (rules/pubkey.json, or the live /puzzle-maker/api/pubkey): no Daily locks built.'); console.log('pages:', buildPages()); process.exit(0); }
 const C = buildCatalog(data);
 mkdirSync(ROOT + 'public/daily', { recursive: true });
 const recent = [];
@@ -68,3 +70,5 @@ for (let i = 0; i < total; i++) {
   made++;
 }
 console.log(`daily locks: ${made} new (key ${pub.kid})`);
+// A page per Daily and the sitemap state (scripts/pages.mjs).
+console.log('pages:', buildPages());

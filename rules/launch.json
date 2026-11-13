@@ -1,7 +1,7 @@
 {
- "_about": "Puzzle Maker's public launch day (Jorge, Nov 13, 2026: no launch day yet). null = every Daily is an unranked preview (no game numbers; badge receipts only from the badges day below) and every page is noindex (hoopsmatic-worker PUZZLE_MAKER_LAUNCH, set the same moment there). Set launch to 'YYYY-MM-DD' (9:00 AM ET) to switch on game numbers (#1 = that day), ranked boards and badges by themselves. start: the first data-built Daily lock. badges: the day badge receipts start (Jorge, Nov 13, 2026: on before launch); null = from launch. scripts/build.mjs copies launch and badges to public/config.json, which the page and the server read.",
- "launch": null,
+ "_about": "Puzzle Maker's public launch (Jorge, Nov 13, 2026): Monday, November 23, 2026, 9:00 AM ET. It is #1; earlier days are unranked previews. The leaderboard and badges count from it (badges: the same day). Everything else switches on by itself at that moment in hoopsmatic-worker (PUZZLE_MAKER_LAUNCH: indexing, sitemap, burger row, games roster). start: the first data-built Daily lock. scripts/build.mjs copies launch and badges to public/config.json, which the page and the server read.",
+ "launch": "2026-11-23",
  "start": "2026-11-13",
  "days": 400,
- "badges": "2026-11-13"
+ "badges": "2026-11-23"
 }
