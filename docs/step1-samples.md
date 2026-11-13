@@ -1,177 +1,214 @@
-# Puzzle Maker, step 1: sample puzzles
+# Puzzle Maker: sample data-built puzzles
 
-Data: Deep Cut facts as of 2026-11-13. Built by `node scripts/samples.mjs 5 sample`.
+Data as of 2026-11-13. `node scripts/samples.mjs 5 sample`.
 
-## Sample 1: Easy (52/100), seed sample-3
+## Sample 1: Easy (53/100), seed sample-1
 
-**The 16 (shuffled for the board):** Andre Iguodala, Caron Butler, Charles Bassey, Courtney Lee, Dennis Rodman, Draymond Green, Jeremy Evans, Jordan Poole, Juan Toscano-Anderson, Justise Winslow, Michael Jordan, Mitchell Robinson, Norman Powell, Robert Parish, Rodney McGruder, Steve Kerr
+**The 16:** Baron Davis, Danny Manning, David Wesley, David West, DeMarre Carroll, George Lynch, Hakeem Olajuwon, Jamaal Tinsley, Joakim Noah, Keldon Johnson, Rudy Gay, Serge Ibaka, Taylor Hendricks, Toni Kukoc, Tyler Herro, Victor Wembanyama
 
-**YELLOW: Won a title with the Bulls** (difficulty 22, about 1995-96)
-- [Michael Jordan](https://hoopsmatic.com/salary-season-finder/player/michael-jordan/): 1990-91 Chicago Bulls
-- [Robert Parish](https://hoopsmatic.com/salary-season-finder/player/robert-parish/): 1996-97 Chicago Bulls
-- [Steve Kerr](https://hoopsmatic.com/salary-season-finder/player/steve-kerr/): 1995-96 Chicago Bulls
-- [Dennis Rodman](https://hoopsmatic.com/salary-season-finder/player/dennis-rodman/): 1995-96 Chicago Bulls
+**YELLOW: Had 10+ blocks in a regular-season game** (difficulty 42, about 2011-12)
+- [Serge Ibaka](https://hoopsmatic.com/salary-season-finder/player/serge-ibaka/): 11 blocks, 2011-12 Oklahoma City Thunder
+- [Hakeem Olajuwon](https://hoopsmatic.com/salary-season-finder/player/hakeem-olajuwon/): 11 blocks, 1985-86 Houston Rockets
+- [Joakim Noah](https://hoopsmatic.com/salary-season-finder/player/joakim-noah/): 11 blocks, 2012-13 Chicago Bulls
+- [Victor Wembanyama](https://hoopsmatic.com/salary-season-finder/player/victor-wembanyama/): 10 blocks, 2023-24 San Antonio Spurs
 
-**GREEN: 2021-22 Golden State Warriors** (difficulty 47, about 2021-22)
-- [Jordan Poole](https://hoopsmatic.com/salary-season-finder/player/jordan-poole/): 76 games for them that season
-- [Andre Iguodala](https://hoopsmatic.com/salary-season-finder/player/andre-iguodala/): 31 games for them that season
-- [Draymond Green](https://hoopsmatic.com/salary-season-finder/player/draymond-green/): 46 games for them that season
-- [Juan Toscano-Anderson](https://hoopsmatic.com/salary-season-finder/player/juan-toscano-anderson/): 73 games for them that season
+**GREEN: Played for the 2003-04 New Orleans Hornets** (difficulty 44, about 2003-04)
+- [Baron Davis](https://hoopsmatic.com/salary-season-finder/player/baron-davis/): 67 games that season
+- [David West](https://hoopsmatic.com/salary-season-finder/player/david-west/): 71 games that season
+- [George Lynch](https://hoopsmatic.com/salary-season-finder/player/george-lynch/): 78 games that season
+- [David Wesley](https://hoopsmatic.com/salary-season-finder/player/david-wesley/): 61 games that season
 
-**BLUE: Played for the Clippers and the Heat** (difficulty 53, about 2019-20)
-- [Norman Powell](https://hoopsmatic.com/salary-season-finder/player/norman-powell/): Los Angeles Clippers 2021-22, Miami Heat 2025-26
-- [Caron Butler](https://hoopsmatic.com/salary-season-finder/player/caron-butler/): Los Angeles Clippers 2011-12, Miami Heat 2002-03
-- [Rodney McGruder](https://hoopsmatic.com/salary-season-finder/player/rodney-mcgruder/): Los Angeles Clippers 2019-20, Miami Heat 2016-17
-- [Justise Winslow](https://hoopsmatic.com/salary-season-finder/player/justise-winslow/): Los Angeles Clippers 2021-22, Miami Heat 2015-16
+**BLUE: Won Sixth Man of the Year** (difficulty 50, about 1997-98)
+- [Keldon Johnson](https://hoopsmatic.com/salary-season-finder/player/keldon-johnson/): Sixth Man of the Year 2025-26
+- [Danny Manning](https://hoopsmatic.com/salary-season-finder/player/danny-manning/): Sixth Man of the Year 1997-98
+- [Tyler Herro](https://hoopsmatic.com/salary-season-finder/player/tyler-herro/): Sixth Man of the Year 2021-22
+- [Toni Kukoc](https://hoopsmatic.com/salary-season-finder/player/toni-kukoc/): Sixth Man of the Year 1995-96
 
-**PURPLE: Played college ball at Western Kentucky** (difficulty 61, about 2010-11)
-- [Mitchell Robinson](https://hoopsmatic.com/salary-season-finder/player/mitchell-robinson/): Western Kentucky
-- [Charles Bassey](https://hoopsmatic.com/salary-season-finder/player/charles-bassey/): Western Kentucky
-- [Jeremy Evans](https://hoopsmatic.com/salary-season-finder/player/jeremy-evans/): Western Kentucky
-- [Courtney Lee](https://hoopsmatic.com/salary-season-finder/player/courtney-lee/): Western Kentucky
+**PURPLE: Played for the Memphis Grizzlies and the Utah Jazz** (difficulty 60, about 2011-12)
+- [Taylor Hendricks](https://hoopsmatic.com/salary-season-finder/player/taylor-hendricks/): Memphis Grizzlies (63 games), Utah Jazz (43 games)
+- [Jamaal Tinsley](https://hoopsmatic.com/salary-season-finder/player/jamaal-tinsley/): Memphis Grizzlies (38 games), Utah Jazz (111 games)
+- [Rudy Gay](https://hoopsmatic.com/salary-season-finder/player/rudy-gay/): Memphis Grizzlies (479 games), Utah Jazz (111 games)
+- [DeMarre Carroll](https://hoopsmatic.com/salary-season-finder/player/demarre-carroll/): Memphis Grizzlies (78 games), Utah Jazz (86 games)
 
-Decoys (true for 3 of the 16, across groups; allowed):
-- Won Olympic gold: Andre Iguodala, Draymond Green, Michael Jordan
-- Won Defensive Player of the Year: Draymond Green, Michael Jordan, Dennis Rodman
-- 2015 draft class: Juan Toscano-Anderson, Norman Powell, Justise Winslow
+Decoys:
+- Went No. 1 overall in the draft: Hakeem Olajuwon, Victor Wembanyama, Danny Manning
+- Played for the 2019-20 San Antonio Spurs: Rudy Gay, DeMarre Carroll, Keldon Johnson
 
-## Sample 2: Medium (62/100), seed sample-4
+Warnings:
+- 4 of the 16 played for the New Orleans Pelicans at some point. Fine, but solvers may try them as a group.
+- 4 of the 16 played for the Los Angeles Clippers at some point. Fine, but solvers may try them as a group.
+- 5 of the 16 played for the San Antonio Spurs at some point. Fine, but solvers may try them as a group.
+- 6 of the 16 played for the Memphis Grizzlies at some point. Fine, but solvers may try them as a group.
+- 4 of the 16 played for the Toronto Raptors at some point. Fine, but solvers may try them as a group.
+- 4 of the 16 played for the Milwaukee Bucks at some point. Fine, but solvers may try them as a group.
+- 5 of the 16 played for the Utah Jazz at some point. Fine, but solvers may try them as a group.
 
-**The 16 (shuffled for the board):** Alexis Ajinca, Brandon Rush, David Lee, Denzel Valentine, Derrick Rose, Isaiah Jackson, Jeremy Lin, Kel'el Ware, Miles Bridges, OG Anunoby, Rodney Carney, Russell Westbrook, Ryan Rollins, Stephen Curry, Thomas Bryant, Victor Oladipo
+## Sample 2: Medium (59/100), seed sample-4
 
-**YELLOW: Played college ball at Indiana** (difficulty 50, about 2017-18)
-- [Victor Oladipo](https://hoopsmatic.com/salary-season-finder/player/victor-oladipo/): Indiana
-- [Kel'el Ware](https://hoopsmatic.com/salary-season-finder/player/kel-el-ware/): Indiana
-- [OG Anunoby](https://hoopsmatic.com/salary-season-finder/player/og-anunoby/): Indiana
-- [Thomas Bryant](https://hoopsmatic.com/salary-season-finder/player/thomas-bryant/): Indiana
+**The 16:** Andrew Nembhard, Bennedict Mathurin, Cory Joseph, DeJuan Blair, Derrick Coleman, Draymond Green, Elden Campbell, Justin Champagnie, Kendall Gill, Khem Birch, Mark Blount, Paul George, Stephen Curry, Steven Adams, Toni Kukoc, Zach LaVine
 
-**GREEN: 2010-11 Golden State Warriors** (difficulty 51, about 2010-11)
-- [Stephen Curry](https://hoopsmatic.com/salary-season-finder/player/stephen-curry/): 74 games for them that season
-- [David Lee](https://hoopsmatic.com/salary-season-finder/player/david-lee/): 73 games for them that season
-- [Jeremy Lin](https://hoopsmatic.com/salary-season-finder/player/jeremy-lin/): 29 games for them that season
-- [Rodney Carney](https://hoopsmatic.com/salary-season-finder/player/rodney-carney/): 25 games for them that season
+**YELLOW: Won Olympic gold** (difficulty 37, about 2010-11)
+- [Stephen Curry](https://hoopsmatic.com/salary-season-finder/player/stephen-curry/): Olympic gold medal
+- [Zach LaVine](https://hoopsmatic.com/salary-season-finder/player/zach-lavine/): Olympic gold medal
+- [Draymond Green](https://hoopsmatic.com/salary-season-finder/player/draymond-green/): Olympic gold medal
+- [Paul George](https://hoopsmatic.com/salary-season-finder/player/paul-george/): Olympic gold medal
 
-**BLUE: 2008 draft class** (difficulty 62, about 2008-09)
-- [Brandon Rush](https://hoopsmatic.com/salary-season-finder/player/brandon-rush/): No. 13 pick in 2008
-- [Derrick Rose](https://hoopsmatic.com/salary-season-finder/player/derrick-rose/): No. 1 pick in 2008
-- [Russell Westbrook](https://hoopsmatic.com/salary-season-finder/player/russell-westbrook/): No. 4 pick in 2008
-- [Alexis Ajinca](https://hoopsmatic.com/salary-season-finder/player/alexis-ajinca/): No. 20 pick in 2008
+**GREEN: Born in Canada** (difficulty 60, about 2017-18)
+- [Bennedict Mathurin](https://hoopsmatic.com/salary-season-finder/player/bennedict-mathurin/): Montreal, Quebec
+- [Cory Joseph](https://hoopsmatic.com/salary-season-finder/player/cory-joseph/): Pickering, Ontario
+- [Andrew Nembhard](https://hoopsmatic.com/salary-season-finder/player/andrew-nembhard/): Aurora, Ontario
+- [Khem Birch](https://hoopsmatic.com/salary-season-finder/player/khem-birch/): Montreal, Quebec
 
-**PURPLE: Born in Michigan** (difficulty 67, about 2018-19)
-- [Miles Bridges](https://hoopsmatic.com/salary-season-finder/player/miles-bridges/): Flint, Michigan
-- [Ryan Rollins](https://hoopsmatic.com/salary-season-finder/player/ryan-rollins/): Detroit, Michigan
-- [Isaiah Jackson](https://hoopsmatic.com/salary-season-finder/player/isaiah-jackson/): Pontiac, Michigan
-- [Denzel Valentine](https://hoopsmatic.com/salary-season-finder/player/denzel-valentine/): Lansing, Michigan
+**BLUE: Played college ball at Pittsburgh** (difficulty 60, about 2009-10)
+- [Justin Champagnie](https://hoopsmatic.com/salary-season-finder/player/justin-champagnie/): Pittsburgh
+- [DeJuan Blair](https://hoopsmatic.com/salary-season-finder/player/dejuan-blair/): Pittsburgh
+- [Steven Adams](https://hoopsmatic.com/salary-season-finder/player/steven-adams/): Pittsburgh
+- [Mark Blount](https://hoopsmatic.com/salary-season-finder/player/mark-blount/): Pittsburgh
 
-Decoys (true for 3 of the 16, across groups; allowed):
-- Won a title with the Warriors: Brandon Rush, Stephen Curry, David Lee
-- Scored 50+ in a game: Derrick Rose, Russell Westbrook, Stephen Curry
+**PURPLE: Drafted in 1990** (difficulty 63, about 1990-91)
+- [Derrick Coleman](https://hoopsmatic.com/salary-season-finder/player/derrick-coleman/): No. 1 pick in 1990
+- [Elden Campbell](https://hoopsmatic.com/salary-season-finder/player/elden-campbell/): No. 27 pick in 1990
+- [Toni Kukoc](https://hoopsmatic.com/salary-season-finder/player/toni-kukoc/): No. 29 pick in 1990
+- [Kendall Gill](https://hoopsmatic.com/salary-season-finder/player/kendall-gill/): No. 5 pick in 1990
 
-## Sample 3: Hard (70/100), seed sample-11
+Decoys:
+- Played for the 2023-24 Golden State Warriors: Cory Joseph, Stephen Curry, Draymond Green
+- Had 8+ steals in a regular-season game: Draymond Green, Paul George, Kendall Gill
 
-**The 16 (shuffled for the board):** Anthony Tolliver, Bismack Biyombo, Chris Paul, Chuck Hayes, Cristiano Felicio, Dwight Powell, Erick Dampier, Ersan Ilyasova, Gary Harris, Kevin Durant, Leandro Barbosa, Maxi Kleber, Metta World Peace, Tracy McGrady, Yao Ming, Zach Randolph
+Warnings:
+- 4 of the 16 played for the Indiana Pacers at some point. Fine, but solvers may try them as a group.
+- 4 of the 16 played for the Oklahoma City Thunder at some point. Fine, but solvers may try them as a group.
 
-**YELLOW: 2008-09 Houston Rockets** (difficulty 46, about 2008-09)
-- [Chuck Hayes](https://hoopsmatic.com/salary-season-finder/player/chuck-hayes/): 71 games for them that season
-- [Metta World Peace](https://hoopsmatic.com/salary-season-finder/player/metta-world-peace/): 69 games for them that season
-- [Yao Ming](https://hoopsmatic.com/salary-season-finder/player/yao-ming/): 77 games for them that season
-- [Tracy McGrady](https://hoopsmatic.com/salary-season-finder/player/tracy-mcgrady/): 35 games for them that season
+## Sample 3: Hard (67/100), seed sample-10
 
-**GREEN: Played for the Warriors and the Suns** (difficulty 59, about 2014-15)
-- [Chris Paul](https://hoopsmatic.com/salary-season-finder/player/chris-paul/): Golden State Warriors 2023-24, Phoenix Suns 2020-21
-- [Leandro Barbosa](https://hoopsmatic.com/salary-season-finder/player/leandro-barbosa/): Golden State Warriors 2014-15, Phoenix Suns 2003-04
-- [Anthony Tolliver](https://hoopsmatic.com/salary-season-finder/player/anthony-tolliver/): Golden State Warriors 2009-10, Phoenix Suns 2014-15
-- [Kevin Durant](https://hoopsmatic.com/salary-season-finder/player/kevin-durant/): Golden State Warriors 2016-17, Phoenix Suns 2022-23
+**The 16:** Aaron Wiggins, Anthony Morrow, Chris Boucher, Derrick Favors, Garrett Temple, Greivis Vasquez, Jake Layman, Jalen Smith, Kevin Love, Kevin Ollie, Kyrie Irving, LeBron James, Nenad Krstic, Ochai Agbaji, Orlando Robinson, Tristan Thompson
 
-**BLUE: 2014 draft class** (difficulty 65, about 2014-15)
-- [Cristiano Felicio](https://hoopsmatic.com/salary-season-finder/player/cristiano-felicio/): 2014 class, undrafted
-- [Gary Harris](https://hoopsmatic.com/salary-season-finder/player/gary-harris/): No. 19 pick in 2014
-- [Dwight Powell](https://hoopsmatic.com/salary-season-finder/player/dwight-powell/): No. 45 pick in 2014
-- [Maxi Kleber](https://hoopsmatic.com/salary-season-finder/player/maxi-kleber/): 2014 class, undrafted
+**YELLOW: Won a title with the Cleveland Cavaliers** (difficulty 17, about 2015-16)
+- [LeBron James](https://hoopsmatic.com/salary-season-finder/player/lebron-james/): 2015-16 champion
+- [Tristan Thompson](https://hoopsmatic.com/salary-season-finder/player/tristan-thompson/): 2015-16 champion
+- [Kevin Love](https://hoopsmatic.com/salary-season-finder/player/kevin-love/): 2015-16 champion
+- [Kyrie Irving](https://hoopsmatic.com/salary-season-finder/player/kyrie-irving/): 2015-16 champion
 
-**PURPLE: Had a 25-rebound game** (difficulty 70, about 2009-10)
-- [Ersan Ilyasova](https://hoopsmatic.com/salary-season-finder/player/ersan-ilyasova/): 25 rebounds, 2011-12 Milwaukee Bucks
-- [Zach Randolph](https://hoopsmatic.com/salary-season-finder/player/zach-randolph/): 25 rebounds, 2009-10 Memphis Grizzlies
-- [Erick Dampier](https://hoopsmatic.com/salary-season-finder/player/erick-dampier/): 25 rebounds, 2003-04 Golden State Warriors
-- [Bismack Biyombo](https://hoopsmatic.com/salary-season-finder/player/bismack-biyombo/): 25 rebounds, 2015-16 Toronto Raptors
+**GREEN: Played for the 2024-25 Toronto Raptors** (difficulty 65, about 2024-25)
+- [Garrett Temple](https://hoopsmatic.com/salary-season-finder/player/garrett-temple/): 28 games that season
+- [Chris Boucher](https://hoopsmatic.com/salary-season-finder/player/chris-boucher/): 50 games that season
+- [Ochai Agbaji](https://hoopsmatic.com/salary-season-finder/player/ochai-agbaji/): 64 games that season
+- [Orlando Robinson](https://hoopsmatic.com/salary-season-finder/player/orlando-robinson/): 35 games that season
 
-Decoys (true for 3 of the 16, across groups; allowed):
-- Played for the Hawks and the Pistons: Ersan Ilyasova, Tracy McGrady, Anthony Tolliver
-- 2005 draft class: Ersan Ilyasova, Chuck Hayes, Chris Paul
-- Played for the Thunder and the Suns: Bismack Biyombo, Chris Paul, Kevin Durant
-- Played for the Suns and the Spurs: Bismack Biyombo, Chris Paul, Anthony Tolliver
-- All-Star with the Rockets: Yao Ming, Tracy McGrady, Kevin Durant
+**BLUE: Played for the New Jersey Nets and the Oklahoma City Thunder** (difficulty 72, about 2009-10)
+- [Anthony Morrow](https://hoopsmatic.com/salary-season-finder/player/anthony-morrow/): New Jersey Nets (120 games), Oklahoma City Thunder (182 games)
+- [Derrick Favors](https://hoopsmatic.com/salary-season-finder/player/derrick-favors/): New Jersey Nets (56 games), Oklahoma City Thunder (39 games)
+- [Kevin Ollie](https://hoopsmatic.com/salary-season-finder/player/kevin-ollie/): New Jersey Nets (19 games), Oklahoma City Thunder (25 games)
+- [Nenad Krstic](https://hoopsmatic.com/salary-season-finder/player/nenad-krstic/): New Jersey Nets (226 games), Oklahoma City Thunder (169 games)
 
-## Sample 4: Expert (75/100), seed sample-13
+**PURPLE: Played college ball at Maryland** (difficulty 75, about 2016-17)
+- [Aaron Wiggins](https://hoopsmatic.com/salary-season-finder/player/aaron-wiggins/): Maryland
+- [Jake Layman](https://hoopsmatic.com/salary-season-finder/player/jake-layman/): Maryland
+- [Greivis Vasquez](https://hoopsmatic.com/salary-season-finder/player/greivis-vasquez/): Maryland
+- [Jalen Smith](https://hoopsmatic.com/salary-season-finder/player/jalen-smith/): Maryland
 
-**The 16 (shuffled for the board):** Anthony Davis, Antonio McDyess, Baron Davis, Ben Simmons, Brandon Bass, Brandon Ingram, Dale Ellis, DeMarcus Cousins, Dikembe Mutombo, Jalen Rose, Marquese Chriss, Naz Reid, Omri Casspi, Tari Eason, Ty Jerome, Zion Williamson
+Decoys:
+- Played for the Brooklyn Nets and the Toronto Raptors: Greivis Vasquez, Garrett Temple, Ochai Agbaji
+- Played for the Milwaukee Bucks and the Sacramento Kings: Greivis Vasquez, Garrett Temple, Kevin Ollie
+- Played for the Sacramento Kings and the Toronto Raptors: Greivis Vasquez, Garrett Temple, Orlando Robinson
+- Played for the Chicago Bulls and the Indiana Pacers: Jalen Smith, Kevin Ollie, Tristan Thompson
+- Played for the Chicago Bulls and the Sacramento Kings: Garrett Temple, Kevin Ollie, Tristan Thompson
 
-**YELLOW: All-Star with the Pelicans** (difficulty 48, about 2017-18)
-- [Anthony Davis](https://hoopsmatic.com/salary-season-finder/player/anthony-davis/): 2013-14 All-Star
-- [Zion Williamson](https://hoopsmatic.com/salary-season-finder/player/zion-williamson/): 2020-21 All-Star
-- [DeMarcus Cousins](https://hoopsmatic.com/salary-season-finder/player/demarcus-cousins/): 2017-18 All-Star
-- [Brandon Ingram](https://hoopsmatic.com/salary-season-finder/player/brandon-ingram/): 2019-20 All-Star
+Warnings:
+- 5 of the 16 played for the Oklahoma City Thunder at some point. Fine, but solvers may try them as a group.
+- 4 of the 16 played for the New Orleans Pelicans at some point. Fine, but solvers may try them as a group.
+- 5 of the 16 played for the Sacramento Kings at some point. Fine, but solvers may try them as a group.
+- 5 of the 16 played for the Toronto Raptors at some point. Fine, but solvers may try them as a group.
+- 8 of the 16 played for the Brooklyn Nets at some point. Fine, but solvers may try them as a group.
+- 5 of the 16 played for the Chicago Bulls at some point. Fine, but solvers may try them as a group.
+- 4 of the 16 played for the Boston Celtics at some point. Fine, but solvers may try them as a group.
+- 5 of the 16 played for the Cleveland Cavaliers at some point. Fine, but solvers may try them as a group.
 
-**GREEN: 1995-96 Denver Nuggets** (difficulty 51, about 1995-96)
-- [Dale Ellis](https://hoopsmatic.com/salary-season-finder/player/dale-ellis/): 81 games for them that season
-- [Antonio McDyess](https://hoopsmatic.com/salary-season-finder/player/antonio-mcdyess/): 76 games for them that season
-- [Dikembe Mutombo](https://hoopsmatic.com/salary-season-finder/player/dikembe-mutombo/): 74 games for them that season
-- [Jalen Rose](https://hoopsmatic.com/salary-season-finder/player/jalen-rose/): 80 games for them that season
+## Sample 4: Expert (76/100), seed sample-11
 
-**BLUE: Played college ball at LSU** (difficulty 65, about 2017-18)
-- [Naz Reid](https://hoopsmatic.com/salary-season-finder/player/naz-reid/): LSU
-- [Tari Eason](https://hoopsmatic.com/salary-season-finder/player/tari-eason/): LSU
-- [Ben Simmons](https://hoopsmatic.com/salary-season-finder/player/ben-simmons/): LSU
-- [Brandon Bass](https://hoopsmatic.com/salary-season-finder/player/brandon-bass/): LSU
+**The 16:** Andrew Bogut, Bob Sura, Brent Barry, Greg Ostertag, Harrison Barnes, Isaiah Joe, Jaylin Williams, Joakim Noah, Jonathan Kuminga, Jordan Walsh, Marcus Smart, Patrick Beverley, Stephen Curry, Travis Best, Tyson Chandler, Victor Wembanyama
 
-**PURPLE: Played for the Cavaliers and the Warriors** (difficulty 70, about 2017-18)
-- [Baron Davis](https://hoopsmatic.com/salary-season-finder/player/baron-davis/): Cleveland Cavaliers 2010-11, Golden State Warriors 2004-05
-- [Marquese Chriss](https://hoopsmatic.com/salary-season-finder/player/marquese-chriss/): Cleveland Cavaliers 2018-19, Golden State Warriors 2019-20
-- [Ty Jerome](https://hoopsmatic.com/salary-season-finder/player/ty-jerome/): Cleveland Cavaliers 2023-24, Golden State Warriors 2022-23
-- [Omri Casspi](https://hoopsmatic.com/salary-season-finder/player/omri-casspi/): Cleveland Cavaliers 2011-12, Golden State Warriors 2017-18
+**YELLOW: Won a title with the Golden State Warriors** (difficulty 37, about 2014-15)
+- [Harrison Barnes](https://hoopsmatic.com/salary-season-finder/player/harrison-barnes/): 2014-15 champion
+- [Andrew Bogut](https://hoopsmatic.com/salary-season-finder/player/andrew-bogut/): 2014-15 champion
+- [Stephen Curry](https://hoopsmatic.com/salary-season-finder/player/stephen-curry/): 2014-15 champion
+- [Jonathan Kuminga](https://hoopsmatic.com/salary-season-finder/player/jonathan-kuminga/): 2021-22 champion
 
-Decoys (true for 3 of the 16, across groups; allowed):
-- Won Most Improved Player: Dale Ellis, Jalen Rose, Brandon Ingram
-- Scored 50+ in a game: Dale Ellis, Anthony Davis, DeMarcus Cousins
-- Won Olympic gold: Antonio McDyess, Anthony Davis, DeMarcus Cousins
-- 2016-17 New Orleans Pelicans: Anthony Davis, DeMarcus Cousins, Omri Casspi
-- No. 1 overall picks: Anthony Davis, Zion Williamson, Ben Simmons
-- 2019 draft class: Zion Williamson, Naz Reid, Ty Jerome
-- Played for the Warriors and the Rockets: DeMarcus Cousins, Marquese Chriss, Omri Casspi
-- 2016 draft class: Brandon Ingram, Ben Simmons, Marquese Chriss
+**GREEN: Won Defensive Player of the Year** (difficulty 53, about 2013-14)
+- [Victor Wembanyama](https://hoopsmatic.com/salary-season-finder/player/victor-wembanyama/): Defensive Player of the Year 2025-26
+- [Tyson Chandler](https://hoopsmatic.com/salary-season-finder/player/tyson-chandler/): Defensive Player of the Year 2011-12
+- [Joakim Noah](https://hoopsmatic.com/salary-season-finder/player/joakim-noah/): Defensive Player of the Year 2013-14
+- [Marcus Smart](https://hoopsmatic.com/salary-season-finder/player/marcus-smart/): Defensive Player of the Year 2021-22
 
-## Sample 5: Medium (62/100), seed sample-14
+**BLUE: Played college ball at Arkansas** (difficulty 73, about 2020-21)
+- [Isaiah Joe](https://hoopsmatic.com/salary-season-finder/player/isaiah-joe/): Arkansas
+- [Jordan Walsh](https://hoopsmatic.com/salary-season-finder/player/jordan-walsh/): Arkansas
+- [Jaylin Williams](https://hoopsmatic.com/salary-season-finder/player/jaylin-williams/): Arkansas
+- [Patrick Beverley](https://hoopsmatic.com/salary-season-finder/player/patrick-beverley/): Arkansas
 
-**The 16 (shuffled for the board):** Al Horford, Cody Martin, Jarrett Jack, JaVale McGee, Kawhi Leonard, Kevin McHale, LaMarcus Aldridge, Luke Babbitt, Luke Kornet, Patrick Patterson, Paul George, Ramon Sessions, Reggie Jackson, Rondae Hollis-Jefferson, Thomas Robinson, Xavier Tillman
+**PURPLE: Drafted in 1995** (difficulty 84, about 1995-96)
+- [Brent Barry](https://hoopsmatic.com/salary-season-finder/player/brent-barry/): No. 15 pick in 1995
+- [Bob Sura](https://hoopsmatic.com/salary-season-finder/player/bob-sura/): No. 17 pick in 1995
+- [Travis Best](https://hoopsmatic.com/salary-season-finder/player/travis-best/): No. 23 pick in 1995
+- [Greg Ostertag](https://hoopsmatic.com/salary-season-finder/player/greg-ostertag/): No. 28 pick in 1995
 
-**YELLOW: Won a title with the Celtics** (difficulty 32, about 2023-24)
-- [Al Horford](https://hoopsmatic.com/salary-season-finder/player/al-horford/): 2023-24 Boston Celtics
-- [Xavier Tillman](https://hoopsmatic.com/salary-season-finder/player/xavier-tillman/): 2023-24 Boston Celtics
-- [Kevin McHale](https://hoopsmatic.com/salary-season-finder/player/kevin-mchale/): 1980-81 Boston Celtics
-- [Luke Kornet](https://hoopsmatic.com/salary-season-finder/player/luke-kornet/): 2023-24 Boston Celtics
+Decoys:
+- Won Olympic gold: Harrison Barnes, Stephen Curry, Tyson Chandler
+- Made 10+ threes in a regular-season game: Stephen Curry, Isaiah Joe, Marcus Smart
+- Born in Texas: Jordan Walsh, Greg Ostertag, Marcus Smart
+- Played for the Chicago Bulls and the Houston Rockets: Patrick Beverley, Brent Barry, Tyson Chandler
+- Played for the Chicago Bulls and the Los Angeles Clippers: Patrick Beverley, Brent Barry, Joakim Noah
+- Played for the Houston Rockets and the Los Angeles Lakers: Patrick Beverley, Tyson Chandler, Marcus Smart
+- Had 10+ blocks in a regular-season game: Greg Ostertag, Victor Wembanyama, Joakim Noah
 
-**GREEN: 2020-21 Los Angeles Clippers** (difficulty 43, about 2020-21)
-- [Reggie Jackson](https://hoopsmatic.com/salary-season-finder/player/reggie-jackson/): 67 games for them that season
-- [Patrick Patterson](https://hoopsmatic.com/salary-season-finder/player/patrick-patterson/): 38 games for them that season
-- [Paul George](https://hoopsmatic.com/salary-season-finder/player/paul-george/): 54 games for them that season
-- [Kawhi Leonard](https://hoopsmatic.com/salary-season-finder/player/kawhi-leonard/): 52 games for them that season
+Warnings:
+- 5 of the 16 played for the Golden State Warriors at some point. Fine, but solvers may try them as a group.
+- 4 of the 16 played for the Dallas Mavericks at some point. Fine, but solvers may try them as a group.
+- 4 of the 16 played for the Los Angeles Lakers at some point. Fine, but solvers may try them as a group.
+- 5 of the 16 played for the Houston Rockets at some point. Fine, but solvers may try them as a group.
+- 5 of the 16 played for the Chicago Bulls at some point. Fine, but solvers may try them as a group.
 
-**BLUE: Played for the Nets and the Trail Blazers** (difficulty 60, about 2015-16)
-- [Thomas Robinson](https://hoopsmatic.com/salary-season-finder/player/thomas-robinson/): Brooklyn Nets 2015-16, Portland Trail Blazers 2013-14
-- [LaMarcus Aldridge](https://hoopsmatic.com/salary-season-finder/player/lamarcus-aldridge/): Brooklyn Nets 2020-21, Portland Trail Blazers 2006-07
-- [Rondae Hollis-Jefferson](https://hoopsmatic.com/salary-season-finder/player/rondae-hollis-jefferson/): Brooklyn Nets 2015-16, Portland Trail Blazers 2020-21
-- [Jarrett Jack](https://hoopsmatic.com/salary-season-finder/player/jarrett-jack/): Brooklyn Nets 2014-15, Portland Trail Blazers 2005-06
+## Sample 5: Medium (57/100), seed sample-14
 
-**PURPLE: Played college ball at Nevada** (difficulty 73, about 2008-09)
-- [Luke Babbitt](https://hoopsmatic.com/salary-season-finder/player/luke-babbitt/): Nevada
-- [Cody Martin](https://hoopsmatic.com/salary-season-finder/player/cody-martin/): Nevada
-- [Ramon Sessions](https://hoopsmatic.com/salary-season-finder/player/ramon-sessions/): Nevada
-- [JaVale McGee](https://hoopsmatic.com/salary-season-finder/player/javale-mcgee/): Nevada
+**The 16:** Ben Wallace, Bennedict Mathurin, Buddy Hield, Collin Murray-Boyles, Cooper Flagg, JaVale McGee, James Johnson, Jeff Green, Jerryd Bayless, Kelly Olynyk, Kris Humphries, Larry Sanders, Serge Ibaka, Tre Johnson, Tyreke Evans, VJ Edgecombe
 
-Decoys (true for 3 of the 16, across groups; allowed):
-- Played for the Thunder and the 76ers: Reggie Jackson, Paul George, Al Horford
-- 2010 draft class: Patrick Patterson, Paul George, Luke Babbitt
-- Scored 50+ in a game: Kawhi Leonard, LaMarcus Aldridge, Kevin McHale
-- Played for the Lakers and the Kings: Thomas Robinson, Ramon Sessions, JaVale McGee
-- Played for the Cavaliers and the Knicks: Jarrett Jack, Ramon Sessions, Luke Kornet
+**YELLOW: Played for the Indiana Pacers and the New Orleans Pelicans** (difficulty 48, about 2021-22)
+- [Tyreke Evans](https://hoopsmatic.com/salary-season-finder/player/tyreke-evans/): Indiana Pacers (69 games), New Orleans Pelicans (202 games)
+- [Bennedict Mathurin](https://hoopsmatic.com/salary-season-finder/player/bennedict-mathurin/): Indiana Pacers (209 games), New Orleans Pelicans (10 games)
+- [James Johnson](https://hoopsmatic.com/salary-season-finder/player/james-johnson/): Indiana Pacers (39 games), New Orleans Pelicans (22 games)
+- [Buddy Hield](https://hoopsmatic.com/salary-season-finder/player/buddy-hield/): Indiana Pacers (158 games), New Orleans Pelicans (57 games)
+
+**GREEN: Drafted in 2025** (difficulty 53, about 2025-26)
+- [VJ Edgecombe](https://hoopsmatic.com/salary-season-finder/player/vj-edgecombe/): No. 3 pick in 2025
+- [Collin Murray-Boyles](https://hoopsmatic.com/salary-season-finder/player/collin-murray-boyles/): No. 9 pick in 2025
+- [Tre Johnson](https://hoopsmatic.com/salary-season-finder/player/tre-johnson/): No. 6 pick in 2025
+- [Cooper Flagg](https://hoopsmatic.com/salary-season-finder/player/cooper-flagg/): No. 1 pick in 2025
+
+**BLUE: Had 10+ blocks in a regular-season game** (difficulty 55, about 2010-11)
+- [Serge Ibaka](https://hoopsmatic.com/salary-season-finder/player/serge-ibaka/): 11 blocks, 2011-12 Oklahoma City Thunder
+- [Larry Sanders](https://hoopsmatic.com/salary-season-finder/player/larry-sanders/): 10 blocks, 2012-13 Milwaukee Bucks
+- [Ben Wallace](https://hoopsmatic.com/salary-season-finder/player/ben-wallace/): 10 blocks, 2001-02 Detroit Pistons
+- [JaVale McGee](https://hoopsmatic.com/salary-season-finder/player/javale-mcgee/): 12 blocks, 2010-11 Washington Wizards
+
+**PURPLE: Played for the 2013-14 Boston Celtics** (difficulty 57, about 2013-14)
+- [Jeff Green](https://hoopsmatic.com/salary-season-finder/player/jeff-green/): 82 games that season
+- [Kelly Olynyk](https://hoopsmatic.com/salary-season-finder/player/kelly-olynyk/): 70 games that season
+- [Jerryd Bayless](https://hoopsmatic.com/salary-season-finder/player/jerryd-bayless/): 41 games that season
+- [Kris Humphries](https://hoopsmatic.com/salary-season-finder/player/kris-humphries/): 69 games that season
+
+Decoys:
+- Played for the Cleveland Cavaliers and the Washington Wizards: Jeff Green, Ben Wallace, JaVale McGee
+- Drafted in 2008: Jerryd Bayless, Serge Ibaka, JaVale McGee
+
+Warnings:
+- 4 of the 16 played for the Boston Celtics at some point. Fine, but solvers may try them as a group.
+- 4 of the 16 played for the Memphis Grizzlies at some point. Fine, but solvers may try them as a group.
+- 4 of the 16 played for the Cleveland Cavaliers at some point. Fine, but solvers may try them as a group.
+- 5 of the 16 played for the Washington Wizards at some point. Fine, but solvers may try them as a group.
+- 6 of the 16 played for the Toronto Raptors at some point. Fine, but solvers may try them as a group.
+- 6 of the 16 played for the New Orleans Pelicans at some point. Fine, but solvers may try them as a group.
+- 4 of the 16 played for the Philadelphia 76ers at some point. Fine, but solvers may try them as a group.
+- 4 of the 16 played for the Dallas Mavericks at some point. Fine, but solvers may try them as a group.
+- 4 of the 16 played for the Sacramento Kings at some point. Fine, but solvers may try them as a group.
+- 4 of the 16 played for the Indiana Pacers at some point. Fine, but solvers may try them as a group.
 
