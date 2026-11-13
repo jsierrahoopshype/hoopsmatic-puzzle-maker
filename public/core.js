@@ -233,6 +233,8 @@ export function checkPuzzle(C, puzzle) {
   for (const id of inPuzzle) for (const fr of players.get(id)?.franchises || []) byFr.set(fr, (byFr.get(fr) || 0) + 1);
   for (const [fr, n] of byFr) if (n >= 4) {
     const ids = [...inPuzzle].filter((id) => players.get(id)?.franchises.includes(fr));
+    // Exactly one group's 4 (a team-based group): that is the group, not a warning.
+    if (n === 4 && groupSets.includes(ids.slice().sort().join(','))) continue;
     warnings.push({ code: 'franchise', text: `${n} of the 16 played for the ${franchiseName(C, fr)} at some point. Fine, but solvers may try them as a group.`, ids });
   }
 

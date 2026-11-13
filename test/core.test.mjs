@@ -79,6 +79,13 @@ test('single-team overlap is a warning, never an error', () => {
   assert.ok(fair.filter((r) => r.warnings.length).every((r) => r.ok));
 });
 
+test('a team-based group is not warned about as single-team overlap', () => {
+  for (const r of fair) for (const w of r.warnings) {
+    const set = w.ids.slice().sort().join(',');
+    assert.ok(!r.groups.some((g) => g.ids.slice().sort().join(',') === set), w.text);
+  }
+});
+
 test('every player has a headshot and a HoopsMatic page', () => {
   for (const r of fair) for (const id of r.groups.flatMap((g) => g.ids)) assert.ok(players.get(id).head && /^https:\/\/hoopsmatic\.com\//.test(players.get(id).link));
 });
