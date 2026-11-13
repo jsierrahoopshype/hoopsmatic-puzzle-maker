@@ -65,7 +65,11 @@ async function startRun(kind, extra = {}) {
   // Resume today's Daily or a reader's puzzle where this browser left it.
   const saved = kind === 'daily' ? store.get('pm-run-d') : kind === 'puzzle' ? store.get('pm-run-u-' + extra.id) : null;
   try {
-    if (saved && saved.token && saved.state && (kind !== 'daily' || saved.date === (await todayDate()))) {
+    // A saved run resumes only if it is still the same puzzle (Dailies made
+    // before a rebuild are dropped).
+    const T = kind === 'daily' ? await todayInfo() : null;
+    const same = kind !== 'daily' || (T && saved && saved.date === T.date && saved.puzzle && saved.puzzle.tiles.map((x) => x.id).join() === T.tiles.map((x) => x.id).join());
+    if (saved && saved.token && saved.state && same) {
       RUN = { token: saved.token, puzzle: saved.puzzle, state: saved.state, guesses: saved.guesses || [] };
     } else {
       const r = await api('start', { kind, device: device(), ...extra });
@@ -83,7 +87,7 @@ async function startRun(kind, extra = {}) {
   if (RUN.state.done) endRun();
 }
 let _today = null;
-async function todayDate() { if (!_today) { try { _today = (await api('today')).date; } catch (e) { _today = ''; } } return _today; }
+async function todayInfo() { if (!_today) { try { _today = await api('today'); } catch (e) { _today = null; } } return _today; }
 function saveRun() {
   if (!RUN) return;
   const p = RUN.puzzle;
