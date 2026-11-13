@@ -31,12 +31,7 @@
   <p class="tag">Find the four NBA groups. Or build your own.</p>
 </header>
 
-<nav class="tabs" aria-label="Puzzle Maker">
-  <a id="tab-daily" href="/puzzle-maker/">Daily</a>
-  <a id="tab-practice" href="/puzzle-maker/?mode=practice">Practice</a>
-  <a id="tab-make" href="/puzzle-maker/?mode=make">Make</a>
-  <a id="tab-browse" href="/puzzle-maker/?mode=browse">Browse</a>
-</nav>
+<p class="back hide" id="back"><a href="/puzzle-maker/">← Today’s Daily</a></p>
 
 <p id="loading" class="meta">Loading…</p>
 <p id="fatal" class="note-box hide" role="alert"></p>
@@ -44,10 +39,10 @@
 <!-- Solve: the Daily, a reader's puzzle (?p=) or practice. -->
 <main id="play" class="hide">
   <p class="meta" id="play-meta"></p>
+ <p class="msg" id="play-msg" aria-live="assertive"></p>
   <div class="solved" id="solved" aria-live="polite"></div>
   <div class="grid" id="grid" role="group" aria-label="Players: pick four that share a link"></div>
   <div class="mist" id="mist" aria-label="Mistakes left"></div>
-  <p class="msg" id="play-msg" aria-live="assertive"></p>
   <div class="actions" id="actions">
     <button class="ghost" id="shuffle" type="button">Shuffle</button>
     <button class="ghost" id="clear" type="button">Deselect</button>
@@ -69,7 +64,7 @@
       <img class="share-img" id="share-img" alt="Your Puzzle Maker result: one row of colored squares per guess, no players">
       <div class="share-link"><input class="share-url" id="share-url" readonly aria-label="Share link"><button class="share-copybtn" id="share-copylink" type="button">Copy</button></div>
       <div class="share-social" id="share-social"></div>
-      <div class="share-btns"><button class="btn" id="sh-download" type="button">Download</button><button class="btn ghost" id="sh-copy" type="button">Copy</button><button class="btn ghost" id="sh-again" type="button">Play again</button></div>
+      <div class="share-btns"><button class="btn" id="sh-download" type="button">Download</button><button class="btn ghost" id="sh-again" type="button">Play again</button></div>
       <div class="share-msg" id="share-msg" aria-live="polite"></div>
     </div>
   </section>
@@ -87,13 +82,15 @@
     <p class="meta small" id="board-note"></p>
   </section>
 
+  <!-- The badge card (hoopsmatic-games.js) lands here, small, below the leaderboard. -->
+  <div id="games-promo"></div>
+
   <section id="end-keep" class="panel hide">
     <h2 class="panel-title">Keep playing</h2>
-    <a class="cta" href="/puzzle-maker/?mode=practice">Practice puzzle</a>
-    <div class="row" style="margin-top:10px">
-      <a class="ghost" href="/puzzle-maker/?mode=browse">Readers’ puzzles</a>
-      <a class="ghost" href="/puzzle-maker/?mode=make">Make one</a>
-    </div>
+    <a class="cta" id="keep-practice" href="/puzzle-maker/?mode=practice">Practice</a>
+    <a class="ghost wide" href="/puzzle-maker/?mode=browse">Readers’ puzzles</a>
+    <a class="ghost wide" href="/puzzle-maker/?mode=make">Make your own</a>
+    <p class="meta small center" id="keep-hard"><a href="/puzzle-maker/?mode=practice&amp;level=hard">Want it tougher? Hard practice</a></p>
   </section>
 </main>
 
@@ -133,13 +130,9 @@
 </main>
 
 <section id="how" class="how">
-  <h2 class="panel-title">How it works</h2>
-  <p>Sixteen NBA players hide four groups of four. Pick four players who share a link and submit. You can make four mistakes. Groups are colored from easiest (yellow) to hardest (purple).</p>
-  <p>Every link is checked against the data, nothing before 1980-81, and team names are as they were that season: the Seattle SuperSonics are not the Thunder. A label counts every player it is true for, in any season.</p>
-  <p>A new Daily at 9:00 AM Eastern: the best readers’ puzzle that other fans found challenging but solvable, or one built from the data. Solve 10 puzzles and you can publish your own.</p>
+  <p>Find four groups of four NBA players. Pick four that share a link and submit; four mistakes and you’re out.</p>
+  <p>A new puzzle every day at 9:00 AM ET. Groups go from easiest (yellow) to hardest (purple).</p>
 </section>
-
-<div id="games-promo"></div>
 <footer class="app-footer">
 <p>Anything wrong with the game? Email us at <a href="mailto:hoopsmatic@hoopsmatic.com">hoopsmatic@hoopsmatic.com</a></p>
 <p>For any other inquiry, contact us at <a href="mailto:ads@hoopsmatic.com">ads@hoopsmatic.com</a></p>

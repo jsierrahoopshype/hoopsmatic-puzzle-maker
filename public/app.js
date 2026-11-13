@@ -50,7 +50,8 @@ function fatal(t) { $('loading').classList.add('hide'); const f = $('fatal'); f.
 function showView(id, tab) {
   $('loading').classList.add('hide');
   for (const v of ['play', 'make', 'browse']) $(v).classList.toggle('hide', v !== id);
-  for (const t of ['daily', 'practice', 'make', 'browse']) $('tab-' + t).classList.toggle('on', t === tab);
+  // No tabs (Jorge, Nov 13, 2026): the page opens on the Daily; other views get a way back.
+  $('back').classList.toggle('hide', tab === 'daily');
 }
 
 // ====================================================================
@@ -95,7 +96,7 @@ function drawPlay() {
   const p = RUN.puzzle, s = RUN.state;
   const meta = $('play-meta'); meta.textContent = '';
   if (p.kind === 'd') meta.append(p.n ? `Daily #${p.n}` : 'Daily (preview)');
-  else if (p.kind === 'p') meta.append('Practice');
+  else if (p.kind === 'p') meta.append(p.level === 'hard' ? 'Hard practice' : 'Practice');
   if (p.title) { if (meta.textContent) meta.append(' · '); meta.appendChild(el('b', null, p.title)); }
   if (p.maker) meta.append(` by ${p.maker}`);
   if (p.kind === 'd' && p.source === 'data') meta.append(' · built from the data');
@@ -183,6 +184,7 @@ function endRun() {
   $('end-squares').textContent = s.grid || '';
   $('end-share').classList.remove('hide');
   $('end-keep').classList.remove('hide');
+  if (p.kind === 'p') { $('keep-practice').textContent = 'Another practice puzzle'; if (p.level === 'hard') { $('keep-practice').href = SITE + '?mode=practice&level=hard'; $('keep-hard').classList.add('hide'); } }
   drawShare();
   if (p.kind === 'd') drawBoard();
   sendBadge();
@@ -275,7 +277,6 @@ function drawShare() {
     b.addEventListener('click', () => window.open(socialUrl(k), '_blank', 'noopener,noreferrer'));
     soc.appendChild(b);
   }
-  $('sh-copy').classList.toggle('hide', !(navigator.clipboard && window.ClipboardItem));
   $('sh-again').textContent = RUN.puzzle.kind === 'p' ? 'New puzzle' : 'Practice';
 }
 const smsg = (t) => { $('share-msg').textContent = t; };
@@ -284,10 +285,7 @@ $('share-copylink').addEventListener('click', async () => { try { await navigato
 $('sh-download').addEventListener('click', () => {
   const a = document.createElement('a'); a.href = $('share-img').src; a.download = 'puzzle-maker-result.png'; document.body.appendChild(a); a.click(); a.remove(); smsg('Saved to your downloads.');
 });
-$('sh-copy').addEventListener('click', async () => {
-  try { await navigator.clipboard.write([new ClipboardItem({ 'image/png': shareBlob })]); smsg('Image copied. Paste it anywhere.'); } catch (e) { smsg('Copy blocked here. Use Download.'); }
-});
-$('sh-again').addEventListener('click', () => { location.href = SITE + '?mode=practice'; });
+$('sh-again').addEventListener('click', () => { location.href = SITE + '?mode=practice' + (RUN && RUN.puzzle.level === 'hard' ? '&level=hard' : ''); });
 
 // ---------- the Daily leaderboard ----------
 const fmtTime = (s) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
@@ -417,17 +415,26 @@ function slotPanel(s, i) {
     box.appendChild(ul);
   } else if (!cat) {
     if (s.ids.length) {
-      const sug = suggest(C, s.ids, { limit: 25, exclude: MK.slots.map((x) => x.key).filter(Boolean) });
-      box.appendChild(el('p', 'meta small', sug.length ? 'Pick the link for this group:' : 'No checkable link fits all of these players. Remove one.'));
+      const all = suggest(C, s.ids, { limit: 40, exclude: MK.slots.map((x) => x.key).filter(Boolean) });
+      // Easy and well-known links first (Jorge, Nov 13, 2026); obscure stats,
+      // birth states and two-team journeymen only on request.
+      const sug = s.showHard ? all : all.filter((x) => x.tier !== 'hard');
+      const nHard = all.length - all.filter((x) => x.tier !== 'hard').length;
+      box.appendChild(el('p', 'meta small', sug.length ? 'Pick the link for this group:' : all.length ? 'Only harder links fit all of these players.' : 'No checkable link fits all of these players. Remove one.'));
       const ul = el('ul', 'picklist');
       for (const x of sug) {
         const li = el('li'), b = el('button'); b.type = 'button';
         b.appendChild(el('span', null, x.label));
-        b.appendChild(el('span', 'sub2', `${TYPE_NAMES[x.type] || x.type} · ${x.pool} players`));
+        b.appendChild(el('span', 'sub2', `${x.tier === 'easy' ? 'Easy' : x.tier === 'medium' ? 'Medium' : 'Hard'} · ${TYPE_NAMES[x.type] || x.type}`));
         b.addEventListener('click', () => { s.key = x.key; saveDraft(); drawMake(); });
         li.appendChild(b); ul.appendChild(li);
       }
       box.appendChild(ul);
+      if (nHard && !s.showHard) {
+        const more = el('button', 'ghost small', `Show ${nHard} harder link${nHard === 1 ? '' : 's'}`); more.type = 'button';
+        more.addEventListener('click', () => { s.showHard = true; drawMake(); });
+        box.appendChild(more);
+      }
     }
     if (s.ids.length < 4) {
       const inp = el('input', 'search'); inp.type = 'search'; inp.placeholder = s.ids.length ? 'Add another player' : 'Start with a player'; inp.autocomplete = 'off';
@@ -554,7 +561,7 @@ async function startBrowse() {
 // ====================================================================
 if (mode === 'make') startMake();
 else if (mode === 'browse') startBrowse();
-else if (mode === 'practice') startRun('practice');
+else if (mode === 'practice') startRun('practice', { level: params.get('level') === 'hard' ? 'hard' : 'normal' });
 else if (pid && /^[A-Za-z0-9]{8}$/.test(pid)) startRun('puzzle', { id: pid });
 else startRun('daily');
 void SQUARES;

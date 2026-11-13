@@ -72,6 +72,14 @@ button { font: inherit; color: inherit; }
 .share-small a { color: var(--text2); }
 
 /* Views */
+.back { margin: 0 0 12px; font-size: 14px; } .back a { color: var(--text2); }
+.center { text-align: center; }
+#play-msg:empty { display: none; }
+#play-msg { margin: 0 0 10px; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--gold); background: var(--deep); font-size: 17px; }
+#play-msg.bad { border-color: var(--red); }
+/* Badges: smaller, below the leaderboard. */
+#games-promo { zoom: .82; margin: 0 0 14px; }
+.how { text-align: center; } .how p { margin: 6px 0; }
 .tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 0 0 14px; }
 .tabs a { display: flex; align-items: center; justify-content: center; min-height: 44px; border-radius: 8px; border: 1px solid var(--line2); background: var(--deep); color: var(--text2);
   font-family: var(--oswald); font-size: 14px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; }
