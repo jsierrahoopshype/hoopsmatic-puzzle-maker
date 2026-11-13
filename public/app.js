@@ -32,15 +32,34 @@ async function api(path, body) {
   if (!r.ok) { const e = new Error((j && j.error) || 'http_' + r.status); e.body = j; e.status = r.status; throw e; }
   return j;
 }
-function addHead(parent, head, cls) {
+// The headshot frame, the same everywhere: a light-grey panel with the
+// NBA.com cutout bottom-aligned at one fixed aspect (260x190), so every player
+// shows head to shoulders at the same scale and nothing is cut at the top.
+// With no photo (or one that fails to load) the frame holds the name instead:
+// never initials, never an empty circle.
+function frame(head, name, cls) {
+  const box = el('span', 'ph' + (cls ? ' ' + cls : ''));
   const src = headUrl(head);
-  if (!src) return;   // no headshot: show nothing, never initials
-  const box = el('span', 'head' + (cls ? ' ' + cls : '') + (head.startsWith('n:') ? ' nba' : ''));
+  const noPhoto = () => { box.textContent = ''; box.classList.add('nophoto'); if (name) box.appendChild(nameBlock(name, 'in')); };
+  if (!src) { noPhoto(); return box; }
   const img = el('img');
-  img.alt = ''; img.decoding = 'async'; img.src = src;
-  img.onerror = () => box.remove();
+  img.alt = ''; img.decoding = 'async'; img.width = 260; img.height = 190; img.src = src;
+  img.onerror = noPhoto;
   box.appendChild(img);
-  parent.appendChild(box);
+  return box;
+}
+function addHead(parent, head, cls, name) { parent.appendChild(frame(head, name, cls)); }
+// First name small, last name bold (Jr./II stay with the last name).
+function nameBlock(full, cls) {
+  const parts = String(full).split(' ');
+  let i = parts.length - 1;
+  while (i > 1 && /^(Jr\.?|Sr\.?|II|III|IV)$/.test(parts[i])) i--;
+  const first = parts.slice(0, i).join(' '), last = parts.slice(i).join(' ');
+  const b = el('span', 'nm' + (cls ? ' ' + cls : ''));
+  if (first) b.appendChild(el('span', 'fn', first));
+  const l = el('span', 'ln' + (last.length > 13 ? ' xl' : last.length > 9 ? ' l' : ''), last);
+  b.appendChild(l);
+  return b;
 }
 const params = new URLSearchParams(location.search);
 const mode = params.get('mode');
@@ -115,8 +134,8 @@ function drawPlay() {
     const b = el('button', 'tile' + (RUN.sel.has(id) ? ' sel' : ''));
     b.type = 'button'; b.dataset.id = id;
     b.setAttribute('aria-pressed', RUN.sel.has(id) ? 'true' : 'false');
-    addHead(b, t.head);
-    b.appendChild(el('span', 'nm', t.name));
+    b.appendChild(frame(t.head, t.name));
+    b.appendChild(nameBlock(t.name));
     b.addEventListener('click', () => toggle(id));
     grid.appendChild(b);
   }
@@ -126,15 +145,19 @@ function drawPlay() {
   if (!s.done) { m.append('Mistakes left'); for (let i = 0; i < 4; i++) m.appendChild(el('i', i < s.left ? '' : 'used')); }
   $('submit').disabled = RUN.sel.size !== 4;
 }
+// A solved group: the four headshots in the same frame, then the label, then
+// one evidence line per player (his name links to his HoopsMatic page).
 function groupRow(g) {
   const row = el('div', 'grow ' + g.color);
+  const faces = el('div', 'faces');
+  for (const p of g.players) faces.appendChild(frame(p.head, p.name, 'mini'));
+  row.appendChild(faces);
   row.appendChild(el('h3', null, g.label));
   const ul = el('ul');
   for (const p of g.players) {
     const li = el('li');
-    // Every player links to his HoopsMatic page.
-    if (p.link) { const a = el('a', null, p.name); a.href = p.link; li.appendChild(a); } else li.append(p.name);
-    if (p.why) li.appendChild(el('span', 'why', p.why));
+    if (p.link) { const a = el('a', null, p.name); a.href = p.link; li.appendChild(a); } else li.appendChild(el('b', null, p.name));
+    if (p.why) li.append(' ', el('span', 'why', p.why));
     ul.appendChild(li);
   }
   row.appendChild(ul);
@@ -389,7 +412,7 @@ function drawMake() {
 function playerChip(id, slot, bad) {
   const p = C.players.get(id);
   const c = el('span', 'pchip' + (bad ? ' bad' : ''));
-  addHead(c, p.head);
+  addHead(c, p.head, 'chip', p.name);
   if (p.link) { const a = el('a', null, p.name); a.href = p.link; a.target = '_blank'; a.rel = 'noopener'; c.appendChild(a); } else c.append(p.name);
   const x = el('button', null, '×'); x.type = 'button'; x.setAttribute('aria-label', 'Remove ' + p.name);
   x.addEventListener('click', () => { slot.ids = slot.ids.filter((y) => y !== id); if (!slot.ids.length) slot.key = null; saveDraft(); drawMake(); });
@@ -459,7 +482,7 @@ function slotPanel(s, i) {
 }
 function pickRow(p, sub, onPick) {
   const li = el('li'), b = el('button'); b.type = 'button';
-  addHead(b, p.head, 'sm');
+  addHead(b, p.head, 'sm', p.name);
   b.appendChild(el('span', null, p.name));
   b.appendChild(el('span', 'sub2', sub));
   b.addEventListener('click', onPick);
