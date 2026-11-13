@@ -1,0 +1,19 @@
+{
+ "_about": "Puzzle Maker reads Deep Cut's compiled player facts instead of re-pulling the raw sources: Deep Cut already joins nba-player-data, salary-season-finder, nba-career-map, nba-born-died and the aderoa/nba-boxscores game highs, with era team names from the NBA Crossword's franchises file. Pinned by Deep Cut commit and sha256. node scripts/pull-data.mjs downloads exactly these into .cache/sources/.",
+ "sources": [
+  {
+   "id": "facts",
+   "repo": "jsierrahoopshype/hoopsmatic-deep-cut",
+   "path": "data/facts.json",
+   "commit": "666d24fb33b2a9f58d8d6eb27146b2aad224ea52",
+   "sha256": "b41457962b959509ed953ded1858e660bb7041b8475c2a44a2ab3fbb25afe481"
+  },
+  {
+   "id": "players",
+   "repo": "jsierrahoopshype/hoopsmatic-deep-cut",
+   "path": "public/players.json",
+   "commit": "666d24fb33b2a9f58d8d6eb27146b2aad224ea52",
+   "sha256": "fc6e8c55e906c539696dca836040441187d01909688cc47cb8e30487de16b101"
+  }
+ ]
+}

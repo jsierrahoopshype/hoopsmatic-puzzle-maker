@@ -1,0 +1,11 @@
+{
+  "name": "hoopsmatic-puzzle-maker",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "pull": "node scripts/pull-data.mjs",
+    "samples": "node scripts/samples.mjs",
+    "test": "node --test test/*.test.mjs"
+  }
+}
