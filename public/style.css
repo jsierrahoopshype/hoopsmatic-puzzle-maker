@@ -169,11 +169,13 @@ button { font: inherit; color: inherit; }
 .tile .ph.nophoto + .nm { display: none; }
 .tile:has(.ph.nophoto) { min-height: 0; }
 /* Name: first name small, last name bold; a fixed two-line block so every tile is the same height. */
-.nm { display: flex; flex-direction: column; justify-content: center; gap: 1px; height: 2.6em; padding: 3px 3px 4px; font-size: 13px; line-height: 1.12; overflow: hidden; }
+.nm { display: flex; flex-direction: column; justify-content: center; gap: 1px; flex: 1 0 auto; min-height: 37px; padding: 3px 3px 4px; font-size: 13px; line-height: 1.12; overflow: hidden; }
+.nm .ln.wrap { white-space: normal; overflow-wrap: anywhere; line-height: 1.05; }
 .nm .fn { font-size: 10.5px; color: var(--text2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.nm .ln { font-weight: 800; color: #fff; overflow-wrap: anywhere; }
+.nm .ln { font-weight: 800; color: #fff; white-space: nowrap; overflow: hidden; }
+.nm.in .ln { white-space: normal; overflow-wrap: anywhere; }
 .nm .ln.l { font-size: 12px; } .nm .ln.xl { font-size: 10.5px; }
-.nm.in { height: auto; } .nm.in .fn { font-size: 12px; white-space: normal; } .nm.in .ln { font-size: 15px; }
+.nm.in { min-height: 0; flex: 0 0 auto; } .nm.in .fn { font-size: 12px; white-space: normal; } .nm.in .ln { font-size: 15px; }
 /* Selected: gold border, a slight lift and a gold-tinted panel. */
 .tile.sel { border-color: var(--gold); background: #2c2b52; transform: translateY(-3px); box-shadow: 0 6px 14px rgba(0,0,0,.45), 0 0 0 1px var(--gold); }
 .tile.sel .ph::after { content: ''; position: absolute; inset: 0; background: rgba(255, 215, 0, .22); }
@@ -182,7 +184,7 @@ button { font: inherit; color: inherit; }
 .tile.shake { animation: shake .35s; }
 @keyframes shake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
 @media (prefers-reduced-motion: reduce) { .tile { transition: none; } .tile.sel { transform: none; } .tile.shake { animation: none; } }
-@media (min-width: 560px) { .grid { gap: 10px; } .nm { font-size: 15px; } .nm .fn { font-size: 12px; } .nm .ln.l { font-size: 14px; } .nm .ln.xl { font-size: 12px; } }
+@media (min-width: 560px) { .grid { gap: 10px; } .nm { font-size: 15px; min-height: 44px; } .nm .fn { font-size: 12px; } .nm .ln.l { font-size: 14px; } .nm .ln.xl { font-size: 12px; } }
 
 /* ---------- Solved group bars ---------- */
 .grow { border-radius: 12px; padding: 10px; color: #121225; }

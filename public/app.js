@@ -49,6 +49,21 @@ function frame(head, name, cls) {
   return box;
 }
 function addHead(parent, head, cls, name) { parent.appendChild(frame(head, name, cls)); }
+// A last name stays on one line and shrinks until it fits its tile (down to
+// 10px); a name still too long wraps to two lines.
+function fitNames(root) {
+  requestAnimationFrame(() => {
+    for (const ln of root.querySelectorAll('.tile .nm .ln')) {
+      ln.style.fontSize = '';
+      let fs = parseFloat(getComputedStyle(ln).fontSize);
+      ln.classList.remove('wrap');
+      while (ln.scrollWidth > ln.clientWidth + 0.5 && fs > 10) { fs -= 0.5; ln.style.fontSize = fs + 'px'; }
+      // Still too long at 10px (Gilgeous-Alexander on a small phone): two lines.
+      if (ln.scrollWidth > ln.clientWidth + 0.5) { ln.classList.add('wrap'); ln.style.fontSize = '10.5px'; }
+    }
+  });
+}
+addEventListener('resize', () => fitNames(document));
 // First name small, last name bold (Jr./II stay with the last name).
 function nameBlock(full, cls) {
   const parts = String(full).split(' ');
@@ -139,6 +154,7 @@ function drawPlay() {
     b.addEventListener('click', () => toggle(id));
     grid.appendChild(b);
   }
+  fitNames(grid);
   grid.classList.toggle('hide', s.done);
   $('actions').classList.toggle('hide', s.done);
   const m = $('mist'); m.textContent = '';
