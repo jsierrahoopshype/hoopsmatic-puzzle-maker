@@ -1,6 +1,6 @@
 // Build everything the page and the server read, into public/:
 //   data.json     compact player facts (format: top of public/core.js)
-//   config.json   { launch } from rules/launch.json
+//   config.json   { launch, badges } from rules/launch.json
 //   daily/<date>.lock  one data-built Daily per day from rules/launch.json
 //                 start, encrypted for the server (scripts/lib/lock.mjs).
 // Existing locks are never rewritten (a published day stays as it was).
@@ -18,7 +18,7 @@ const ROOT = new URL('..', import.meta.url).pathname;
 const L = JSON.parse(readFileSync(ROOT + 'rules/launch.json', 'utf8'));
 const data = compactData();
 writeFileSync(ROOT + 'public/data.json', JSON.stringify(data));
-writeFileSync(ROOT + 'public/config.json', JSON.stringify({ launch: L.launch }) + '\n');
+writeFileSync(ROOT + 'public/config.json', JSON.stringify({ launch: L.launch, badges: L.badges || null }) + '\n');
 console.log(`data.json: ${data.players.length} players, as of ${data.asOf}`);
 
 const pub = await fetchPubkey();
@@ -27,8 +27,11 @@ const C = buildCatalog(data);
 mkdirSync(ROOT + 'public/daily', { recursive: true });
 const recent = [];
 let made = 0;
-for (let i = 0; i < L.days; i++) {
-  const date = new Date(Date.parse(L.start + 'T00:00:00Z') + i * 86400000).toISOString().slice(0, 10);
+// From the start day to L.days ahead of today (the weekly refresh rolls it forward).
+const startMs = Date.parse(L.start + 'T00:00:00Z');
+const total = Math.max(L.days, Math.ceil((Date.now() - startMs) / 86400000) + L.days);
+for (let i = 0; i < total; i++) {
+  const date = new Date(startMs + i * 86400000).toISOString().slice(0, 10);
   const file = `${ROOT}public/daily/${date}.lock`;
   if (existsSync(file)) continue;
   let r = null;
