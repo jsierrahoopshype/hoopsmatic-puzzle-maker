@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Puzzle Maker #303 (September 21, 2027): find the four NBA groups | HoopsMatic</title>
+<meta name="description" content="The Puzzle Maker Daily for September 21, 2027: sixteen NBA players, four hidden groups of four. Solve it, then play today's.">
+<!-- Search: hoopsmatic-worker sends X-Robots-Tag noindex until the launch
+     moment (Nov 23, 2026, 9:00 AM ET), and after it for today's, future and
+     preview Daily pages and any URL with a query (puzzleMakerNoindex). -->
+<link rel="canonical" href="https://hoopsmatic.com/puzzle-maker/2027-09-21/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="HoopsMatic">
+<meta property="og:title" content="Puzzle Maker #303: find the four NBA groups">
+<meta property="og:description" content="Sixteen NBA players, four hidden groups. Solve today's puzzle or build one for other fans.">
+<meta property="og:url" content="https://hoopsmatic.com/puzzle-maker/2027-09-21/">
+<meta property="og:image" content="https://hoopsmatic.com/puzzle-maker/og-card">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Puzzle Maker by HoopsMatic: find the four NBA groups">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://hoopsmatic.com/puzzle-maker/og-card">
+<meta name="theme-color" content="#0b0b1c">
+<link rel="preload" href="/puzzle-maker/fonts/oswald-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/puzzle-maker/style.css">
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <h1 class="logo">Puzzle Maker</h1>
+  <p class="tag">Find the four NBA groups. Or build your own.</p>
+</header>
+
+<p class="back hide" id="back"><a href="/puzzle-maker/">← Today’s Daily</a></p>
+
+<p id="loading" class="meta">Loading…</p>
+<p id="fatal" class="note-box hide" role="alert"></p>
+
+<!-- Solve: the Daily, a reader's puzzle (?p=) or practice. -->
+<main id="play" class="hide">
+  <p class="meta" id="play-meta"></p>
+ <p class="msg" id="play-msg" aria-live="assertive"></p>
+  <div class="solved" id="solved" aria-live="polite"></div>
+  <div class="grid" id="grid" role="group" aria-label="Players: pick four that share a link"></div>
+  <div class="mist" id="mist" aria-label="Mistakes left"></div>
+  <div class="actions" id="actions">
+    <button class="ghost" id="shuffle" type="button">Shuffle</button>
+    <button class="ghost" id="clear" type="button">Deselect</button>
+    <button class="cta" id="submit" type="button" disabled>Submit</button>
+  </div>
+
+  <section id="end" class="panel hide" style="margin-top:14px">
+    <p class="result-line" id="end-line"></p>
+    <p class="meta" id="end-sub"></p>
+    <p class="squares" id="end-squares" aria-label="Your guesses as colored squares"></p>
+  </section>
+
+  <section id="end-share" class="panel hide">
+    <h2 class="panel-title">Share</h2>
+    <!-- The 73-9 game's share block (hoopsmatic.com/73-9-game), inline as in
+         Deep Cut: result image, link + Copy, six social buttons, Download /
+         Copy / Play again, a message line. Spoiler-free: colors only. -->
+    <div class="share-box">
+      <img class="share-img" id="share-img" alt="Your Puzzle Maker result: one row of colored squares per guess, no players">
+      <div class="share-link"><input class="share-url" id="share-url" readonly aria-label="Share link"><button class="share-copybtn" id="share-copylink" type="button">Copy</button></div>
+      <div class="share-social" id="share-social"></div>
+      <div class="share-btns"><button class="btn" id="sh-download" type="button">Download</button><button class="btn ghost" id="sh-again" type="button">Play again</button></div>
+      <div class="share-msg" id="share-msg" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section id="end-board" class="panel hide">
+    <h2 class="panel-title">Today’s leaderboard</h2>
+    <p class="board-you" id="board-you"></p>
+    <form class="board-name hide" id="board-form" autocomplete="off">
+      <label for="board-name-in" class="vh">Your name</label>
+      <input id="board-name-in" maxlength="24" placeholder="Your name (optional)">
+      <button class="share-copybtn" type="submit">Save</button>
+    </form>
+    <p class="share-msg" id="board-msg" aria-live="polite"></p>
+    <ol class="board-list" id="board-list"></ol>
+    <p class="meta small" id="board-note"></p>
+  </section>
+
+  <!-- The badge card (hoopsmatic-games.js) lands here, small, below the leaderboard. -->
+  <div id="games-promo"></div>
+
+  <section id="end-keep" class="panel hide">
+    <h2 class="panel-title">Keep playing</h2>
+    <a class="cta" id="keep-practice" href="/puzzle-maker/?mode=practice">Practice</a>
+    <a class="ghost wide" href="/puzzle-maker/?mode=browse">Readers’ puzzles</a>
+    <a class="ghost wide" href="/puzzle-maker/?mode=make">Make your own</a>
+    <p class="meta small center" id="keep-hard"><a href="/puzzle-maker/?mode=practice&amp;level=hard">Want it tougher? Hard practice</a></p>
+  </section>
+</main>
+
+<!-- Make: four groups, tool-suggested labels, live fairness and difficulty. -->
+<main id="make" class="hide">
+  <section class="panel">
+    <h2 class="panel-title">Make a puzzle</h2>
+    <p class="meta" id="make-gate"></p>
+    <p class="meta small">Start each group with one player. The tool lists the links the data can check for him; pick one, then add three more players who fit. Every group is checked against the data, and so is every other link among your 16.</p>
+  </section>
+  <div id="slots"></div>
+  <section class="panel check" id="check" aria-live="polite"></section>
+  <section class="panel">
+    <label class="field"><span>Title (3 to 48 characters)</span><input id="mk-title" maxlength="48" autocomplete="off"></label>
+    <label class="field"><span>Your name as the maker (optional)</span><input id="mk-maker" maxlength="24" autocomplete="off"></label>
+    <button class="cta" id="publish" type="button" disabled>Publish</button>
+    <p class="msg" id="mk-msg" aria-live="assertive"></p>
+  </section>
+  <section class="panel hide" id="mine">
+    <h2 class="panel-title">Your puzzles</h2>
+    <p class="meta" id="mine-rating"></p>
+    <ul class="plist" id="mine-list"></ul>
+  </section>
+</main>
+
+<!-- Browse readers' puzzles. -->
+<main id="browse" class="hide">
+  <section class="panel">
+    <h2 class="panel-title">Readers’ puzzles</h2>
+    <div class="row" style="margin-bottom:8px">
+      <a class="ghost small" id="sort-new" href="/puzzle-maker/?mode=browse">Newest</a>
+      <a class="ghost small" id="sort-top" href="/puzzle-maker/?mode=browse&amp;sort=top">Best rated</a>
+    </div>
+    <ul class="plist" id="browse-list"></ul>
+    <p class="meta small" id="browse-note"></p>
+  </section>
+</main>
+
+<section id="how" class="how">
+  <p>Find four groups of four NBA players. Pick four that share a link and submit; four mistakes and you’re out.</p>
+  <p>A new puzzle every day at 9:00 AM ET. Groups go from easiest (yellow) to hardest (purple).</p>
+</section>
+<footer class="app-footer">
+<p>Anything wrong with the game? Email us at <a href="mailto:hoopsmatic@hoopsmatic.com">hoopsmatic@hoopsmatic.com</a></p>
+<p>For any other inquiry, contact us at <a href="mailto:ads@hoopsmatic.com">ads@hoopsmatic.com</a></p>
+</footer>
+</div>
+<script type="module" src="/puzzle-maker/app.js"></script>
+<script src="https://hoopsmatic.com/hoopsmatic-games.js" data-hm-game="puzzlemaker" defer></script>
+</body>
+</html>

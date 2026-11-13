@@ -79,6 +79,8 @@ function nameBlock(full, cls) {
 const params = new URLSearchParams(location.search);
 const mode = params.get('mode');
 const pid = params.get('p');
+// A Daily's own page: /puzzle-maker/YYYY-MM-DD/ (scripts/pages.mjs).
+const DAY = (location.pathname.match(/\/puzzle-maker\/(\d{4}-\d{2}-\d{2})\/?$/) || [])[1] || null;
 
 function fatal(t) { $('loading').classList.add('hide'); const f = $('fatal'); f.textContent = t; f.classList.remove('hide'); }
 function showView(id, tab) {
@@ -95,14 +97,15 @@ let RUN = null;   // { token, puzzle, state, sel:Set, order:[ids], guesses:[[ids
 const runKey = (p) => p.kind === 'd' ? 'pm-run-d-' + p.date : p.kind === 'u' ? 'pm-run-u-' + p.id : null;
 
 async function startRun(kind, extra = {}) {
-  showView('play', kind === 'daily' ? 'daily' : kind === 'practice' ? 'practice' : null);
+  showView('play', kind === 'daily' && !DAY ? 'daily' : kind === 'practice' ? 'practice' : null);
   // Resume today's Daily or a reader's puzzle where this browser left it.
-  const saved = kind === 'daily' ? store.get('pm-run-d') : kind === 'puzzle' ? store.get('pm-run-u-' + extra.id) : null;
+  const saved = kind === 'daily' ? store.get('pm-run-d-' + (extra.date || (await todayInfo())?.date)) : kind === 'puzzle' ? store.get('pm-run-u-' + extra.id) : null;
   try {
     // A saved run resumes only if it is still the same puzzle (Dailies made
     // before a rebuild are dropped).
     const T = kind === 'daily' ? await todayInfo() : null;
-    const same = kind !== 'daily' || (T && saved && saved.date === T.date && saved.puzzle && saved.puzzle.tiles.map((x) => x.id).join() === T.tiles.map((x) => x.id).join());
+    // A past Daily page (extra.date) resumes its own saved run; today's checks the tiles.
+    const same = kind !== 'daily' || (extra.date && extra.date !== (T && T.date) ? !!saved : (T && saved && saved.date === T.date && saved.puzzle && saved.puzzle.tiles.map((x) => x.id).join() === T.tiles.map((x) => x.id).join()));
     if (saved && saved.token && saved.state && same) {
       RUN = { token: saved.token, puzzle: saved.puzzle, state: saved.state, guesses: saved.guesses || [] };
     } else {
@@ -112,6 +115,7 @@ async function startRun(kind, extra = {}) {
     }
   } catch (e) {
     if (e.message === 'no_puzzle') return fatal(kind === 'puzzle' ? 'That puzzle doesn’t exist or was removed.' : 'No puzzle today yet. Try practice.');
+    if (e.message === 'not_found' && extra.date) return fatal('This Daily isn’t out yet. It opens at 9:00 AM ET on its day.');
     return fatal('The game server couldn’t be reached. Refresh to try again.');
   }
   RUN.sel = new Set();
@@ -126,14 +130,14 @@ function saveRun() {
   if (!RUN) return;
   const p = RUN.puzzle;
   const v = { token: RUN.token, puzzle: p, state: RUN.state, guesses: RUN.guesses, date: p.date };
-  if (p.kind === 'd') store.set('pm-run-d', v);
+  if (p.kind === 'd') store.set('pm-run-d-' + p.date, v);
   else if (p.kind === 'u') store.set('pm-run-u-' + p.id, v);
 }
 
 function drawPlay() {
   const p = RUN.puzzle, s = RUN.state;
   const meta = $('play-meta'); meta.textContent = '';
-  if (p.kind === 'd') meta.append(p.n ? `Daily #${p.n}` : 'Daily (preview)');
+  if (p.kind === 'd') meta.append((p.n ? `Daily #${p.n}` : 'Daily (preview)') + (DAY ? ' · ' + new Date(p.date + 'T12:00:00Z').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' }) : ''));
   else if (p.kind === 'p') meta.append(p.level === 'hard' ? 'Hard practice' : 'Practice');
   if (p.title) { if (meta.textContent) meta.append(' · '); meta.appendChild(el('b', null, p.title)); }
   if (p.maker) meta.append(` by ${p.maker}`);
@@ -237,7 +241,7 @@ function endRun() {
 // ---------- share: text (squares) + the 73-9 block + an image ----------
 function shareUrl() {
   const p = RUN.puzzle;
-  return 'https://hoopsmatic.com/puzzle-maker/' + (p.kind === 'u' ? '?p=' + p.id : p.kind === 'p' ? '?mode=practice' : '');
+  return 'https://hoopsmatic.com/puzzle-maker/' + (p.kind === 'u' ? '?p=' + p.id : p.kind === 'p' ? '?mode=practice' : DAY ? DAY + '/' : '');
 }
 function shareHead() {
   const p = RUN.puzzle;
@@ -606,5 +610,6 @@ if (mode === 'make') startMake();
 else if (mode === 'browse') startBrowse();
 else if (mode === 'practice') startRun('practice', { level: params.get('level') === 'hard' ? 'hard' : 'normal' });
 else if (pid && /^[A-Za-z0-9]{8}$/.test(pid)) startRun('puzzle', { id: pid });
+else if (DAY) startRun('daily', { date: DAY });
 else startRun('daily');
 void SQUARES;
