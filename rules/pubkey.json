@@ -1,0 +1,12 @@
+{
+ "_about": "The Puzzle Maker server public key (public by design), as served at https://hoopsmatic.com/puzzle-maker/api/pubkey. scripts/build.mjs locks the data-built Dailies with it and compares it with the live key whenever that answers.",
+ "kid": "BoPioHj2An6pLZ-L",
+ "jwk": {
+  "kty": "RSA",
+  "n": "uSY2PMn7m8Y2zuoCjDhIbQJOKWcp89EmIMXQg4KEUPzrrI6oTink7oSc1EQE_vGNCg7o1VkSkGsd4IGJ9Tp48XvHwqZPE25OhEVCaIlWQZao5A3iHORNvM5pmWKIWmGdvoikBPjyyhY5zNTsci-fXzPNSFYPtKkOI6i7B2HNa-6mGzfyvrjyvhk5PVu23AI0An2D4BkjdYOSm1FzJHi8h83jTli7gsIHTH6jGq6cHGTYCN7cRwah8NmmeQsZEs-y9G3ry1w85Dkf6kUTbuCBakpOuloMC6IDqEDTJZhFWdDKgmy7n2kTYTgkCf1qlZzslmLcnqsyN-TSjl2bMeEyH-t0X_WIU8hJoGhAC-CeochMrNUHE1UD3skZYzMRSa5i-ptQw1LHzQHXxyIPSqcdo0oNqlYlcz6cxmMxM42sL1_Pjd7ODDwz_w-Wp79MG7x16O5IxSIC5zQN0eOVZ-WC77PuqySgKf8k8kjKFt6uvPyCFOXPwa0Y8ynHfyk4cJoz",
+  "e": "AQAB",
+  "alg": "RSA-OAEP-256",
+  "use": "enc",
+  "kid": "BoPioHj2An6pLZ-L"
+ }
+}
