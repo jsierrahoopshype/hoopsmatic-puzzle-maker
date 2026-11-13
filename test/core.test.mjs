@@ -102,3 +102,39 @@ test('judging guesses and the share grid', () => {
   assert.deepEqual(judge(groups, [], [...groups[0].ids.slice(0, 3), groups[1].ids[0]]), { away: 3 });
   assert.equal(shareGrid(groups, [groups[0].ids]), '\u{1F7E8}'.repeat(4));
 });
+
+test('Dailies: 2+ easy groups, no hard group, Easy or Medium, 12+ tiles from 2010-11 on', () => {
+  for (const r of fair) {
+    assert.ok(r.difficulty.easy >= 2, r.groups.map((g) => g.label).join(' | '));
+    assert.equal(r.difficulty.hard, 0);
+    assert.ok(['Easy', 'Medium'].includes(r.difficulty.label));
+    assert.ok(r.groups.reduce((n, g) => n + g.ids.filter((id) => g.why[id].y >= 2011).length, 0) >= 12);
+  }
+});
+
+test('Hard practice can use hard groups and is rated Hard or harder when it does', () => {
+  const hs = Array.from({ length: 10 }, (_, i) => generatePuzzle(C, 'hard-' + i, { mode: 'hard' })).filter(Boolean);
+  assert.ok(hs.length >= 9);
+  for (const r of hs) if (r.difficulty.hard) assert.ok(['Hard', 'Expert'].includes(r.difficulty.label));
+});
+
+test('labels that can mean two things are never groups', () => {
+  for (const key of ['state:Georgia', 'country:Georgia']) if (cats.get(key)) assert.ok(cats.get(key).ambiguous, key);
+  const hornets = [...cats.values()].filter((c) => c.type !== 'roster' && c.label.includes('Charlotte Hornets'));
+  assert.ok(hornets.length && hornets.every((c) => c.ambiguous));
+  const labels = new Map();
+  for (const c of cats.values()) if (!c.ambiguous) { assert.ok(!labels.has(c.label), c.label); labels.set(c.label, 1); }
+  const r = generatePuzzle(C, 'amb', { mode: 'hard' });
+  const p = asInput(r); p.groups[0].key = 'state:Georgia';
+  assert.ok(checkPuzzle(C, p).errors.some((e) => e.code === 'ambiguous'));
+});
+
+test('a maker puzzle with fewer than 2 easy groups gets a warning; suggestions list easy links first', () => {
+  const r = generatePuzzle(C, 'hard-w', { mode: 'hard', tries: 20000 });
+  const res = checkPuzzle(C, asInput(r));
+  if (res.difficulty.easy < 2) assert.ok(res.warnings.some((w) => w.code === 'easy'));
+  const g = fair[0].groups.find((x) => x.tier === 'easy');
+  const s = suggest(C, g.ids.slice(0, 2));
+  const order = { easy: 0, medium: 1, hard: 2 };
+  for (let i = 1; i < s.length; i++) assert.ok(order[s[i - 1].tier] <= order[s[i].tier]);
+});

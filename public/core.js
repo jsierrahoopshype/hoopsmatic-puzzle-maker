@@ -48,15 +48,45 @@ export const FEATS = [
 const SOLO = { roy: 'Won Rookie of the Year', smoy: 'Won Sixth Man of the Year', mip: 'Won Most Improved Player', dpoy: 'Won Defensive Player of the Year' };
 const SOLO_NAME = { roy: 'Rookie of the Year', smoy: 'Sixth Man of the Year', mip: 'Most Improved Player', dpoy: 'Defensive Player of the Year' };
 
+// TIERS (Jorge, Nov 13, 2026: Dailies a casual fan can get into).
+//   easy    a fan sees it from the names alone: same team that season (2010-11
+//           on), same college, top-5 picks of one draft, teammates of a star,
+//           same country of birth;
+//   medium  well-known honors: titles, All-Star teams, awards, No. 1 picks,
+//           Olympic gold, a team-season before 2010-11;
+//   hard    obscure stats, birth states and cities, two-team journeymen,
+//           whole draft classes: Hard practice and readers' puzzles only.
+// Dailies and Easy/Medium practice use easy and medium groups only, with at
+// least 2 easy ones.
+const TIER = { roster: 'easy', college: 'easy', top5: 'easy', mate: 'easy', country: 'easy',
+  ring: 'medium', allstar: 'medium', solo: 'medium', no1: 'medium', olygold: 'medium',
+  teams: 'hard', draft: 'hard', feat: 'hard', state: 'hard', city: 'hard', club: 'hard' };
+// A group's tier: its kind's, except a team-season before 2010-11 is medium.
+export function tierOf(type, anchor) {
+  if (type === 'roster' && anchor != null && anchor < RECENT_SEASON) return 'medium';
+  return TIER[type] || 'hard';
+}
 // How obscure a kind of link is, before the players are taken into account.
-const TYPE_BASE = { ring: 10, no1: 15, solo: 25, roster: 30, allstar: 30, olygold: 35, teams: 40, feat: 40,
-  college: 45, draft: 55, country: 50, state: 65, city: 70, club: 60 };
+const TYPE_BASE = { roster: 10, top5: 12, mate: 15, college: 18, country: 20, ring: 22, no1: 22, allstar: 28, solo: 32, olygold: 32,
+  teams: 55, draft: 55, feat: 60, state: 65, city: 70, club: 65 };
 // How often the generator draws each kind (club: checked, never drawn).
-const TYPE_WEIGHT = { teams: 5, roster: 4, draft: 4, college: 4, feat: 3, ring: 2, allstar: 2, country: 2, state: 1, city: 1, solo: 2, no1: 1, olygold: 1, club: 0 };
+const TYPE_WEIGHT = { teams: 5, roster: 4, draft: 4, college: 4, feat: 3, ring: 2, allstar: 2, country: 2, state: 1, city: 1, solo: 2, no1: 1, olygold: 1, club: 0,
+  top5: 3, mate: 3 };
+// Daily weights: the easy kinds most of the time.
+const DAILY_WEIGHT = { roster: 5, college: 4, top5: 3, mate: 4, country: 3, ring: 3, allstar: 2, solo: 2, no1: 1, olygold: 1 };
 const BIRTH = new Set(['country', 'state', 'city']);
 export const TYPE_NAMES = { teams: 'Two teams', roster: 'Team in one season', draft: 'Draft class', college: 'College', country: 'Born in a country',
   state: 'Born in a state', city: 'Born in a city', feat: 'Single-game feat', ring: 'Title with a team', allstar: 'All-Star with a team',
-  solo: 'Award', no1: 'No. 1 pick', olygold: 'Olympic gold', club: 'Club before the NBA' };
+  solo: 'Award', no1: 'No. 1 pick', olygold: 'Olympic gold', club: 'Club before the NBA', top5: 'Top-5 picks of a draft', mate: 'Teammates of a star' };
+// Team names that repeat across eras of one franchise (the Charlotte Hornets
+// of 1988-2002 and of 2014 on share one name): no group may use one without
+// a season in its label.
+const REPEATED_NAMES = new Set(['Charlotte Hornets']);
+// Place names that mean two things (Georgia, the country and the U.S. state).
+const AMBIGUOUS_PLACES = new Set(['Georgia']);
+// Stars whose teammates make an easy group: well known (fame 35+) and active
+// 2011-12 or later.
+const STAR_FAME = 35;
 
 // ---------- catalog ----------
 // buildCatalog(data) -> { players: Map(id -> player), cats: Map(key -> cat),
@@ -116,12 +146,14 @@ export function buildCatalog(data) {
     // Draft (drafted players only).
     if (d && k) {
       const few = g < MIN_DRAFT_GAMES ? `fewer than ${MIN_DRAFT_GAMES} career games` : null;
+      if (k <= 5) add(`top5:${d}`, 'top5', `Top-5 pick in the ${d} draft`, id, d + 1, `No. ${k} pick in ${d}`, few || old(d + 1));
       add(`draft:${d}`, 'draft', `Drafted in ${d}`, id, d + 1, `No. ${k} pick in ${d}`, few || old(d + 1));
       if (k === 1) add('no1', 'no1', 'Went No. 1 overall in the draft', id, d + 1, `No. 1 pick in ${d}`, few || old(d + 1));
     }
     if (c) {
-      if (clubLike.has(c)) add(`club:${c}`, 'club', `Played for ${cn || c} before the NBA`, id, first, cn || c, old(first));
-      else add(`college:${c}`, 'college', `Played college ball at ${cn || c}`, id, first, cn || c, old(first));
+      // Keyed by the display name, so two spellings of one school (Connecticut, UConn) are one group.
+      if (clubLike.has(c)) add(`club:${cn || c}`, 'club', `Played for ${cn || c} before the NBA`, id, first, cn || c, old(first));
+      else add(`college:${cn || c}`, 'college', `Played college ball at ${cn || c}`, id, first, cn || c, old(first));
     }
     // Birthplace only, never nationality.
     if (b && b !== 'United States') add(`country:${b}`, 'country', `Born in ${b}`, id, first, bp || b, old(first));
@@ -142,6 +174,35 @@ export function buildCatalog(data) {
       const F = FEATS[f];
       add(`feat:${F.k}`, 'feat', F.label, id, y, `${v} ${F.unit}, ${seasonLabel(y)} ${uname(u)}`, old(y));
     }
+  }
+  // Teammates of a star: played for the same team in a season the star did
+  // (20+ games that season to be in the group).
+  const stars = [...players.values()].filter((p) => p.fame >= STAR_FAME && p.last >= 2012);
+  const starAt = new Map();   // "season|unit" -> [star ids]
+  for (const r of data.players) {
+    if (!stars.some((st) => st.id === r[0])) continue;
+    for (const [y, u] of r[14]) { const k2 = y + '|' + u; (starAt.get(k2) || starAt.set(k2, []).get(k2)).push(r[0]); }
+  }
+  const starName = new Map(stars.map((st) => [st.id, st.name]));
+  for (const r of data.players) {
+    const gpAt = new Map();
+    for (const [y, u, gp] of r[14]) gpAt.set(y + '|' + u, (gpAt.get(y + '|' + u) || 0) + gp);
+    for (const [k2, gp] of gpAt) for (const st of starAt.get(k2) || []) {
+      if (st === r[0]) continue;
+      const [y, u] = k2.split('|').map(Number);
+      add(`mate:${st}`, 'mate', `Played with ${starName.get(st)}`, r[0], y, `${seasonLabel(y)} ${uname(u)}`,
+        gp < MIN_SEASON_GAMES ? `fewer than ${MIN_SEASON_GAMES} games that season` : y < FIRST_SEASON ? 'before 1980-81' : null);
+    }
+  }
+  // Labels that can mean two things can't be groups (they still count in the
+  // fairness check): a repeated team name without a season, an ambiguous
+  // place, or two labels that read the same.
+  const byLabel = new Map();
+  for (const c of cats.values()) (byLabel.get(c.label) || byLabel.set(c.label, []).get(c.label)).push(c);
+  for (const c of cats.values()) {
+    if (byLabel.get(c.label).length > 1) c.ambiguous = 'this label can mean two things';
+    if (c.type !== 'roster' && [...REPEATED_NAMES].some((n) => c.label.includes(n))) c.ambiguous = 'that team name was used in two eras';
+    if (['country', 'state', 'city'].includes(c.type) && [...AMBIGUOUS_PLACES].some((n) => c.label.includes(n))) c.ambiguous = 'that place name can mean two things';
   }
   return { players, cats, catsOf, units, asOf: data.asOf };
 }
@@ -194,6 +255,7 @@ export function checkPuzzle(C, puzzle) {
 
   for (const g of groups) {
     if (!g.cat) { E('key', `Unknown group ${g.key}.`, { key: g.key }); continue; }
+    if (g.cat.ambiguous) E('ambiguous', `"${g.cat.label}" can't be a group: ${g.cat.ambiguous}.`, { key: g.key });
     if (g.ids.length !== 4) E('size', `"${g.cat.label}" needs 4 players (has ${g.ids.length}).`, { key: g.key });
     g.why = {};
     for (const id of g.ids) {
@@ -252,19 +314,27 @@ export function checkPuzzle(C, puzzle) {
     g.score = Math.round(0.6 * (TYPE_BASE[g.cat.type] ?? 40) + 40 * (1 - fame / 40) + Math.min(pulls, 4) * 5 - (g.anchor >= 2016 ? 5 : 0));
     g.label = g.cat.label;
     g.type = g.cat.type;
+    g.tier = tierOf(g.cat.type, g.anchor);
   }
+  const easy = groups.filter((g) => g.tier === 'easy').length;
+  if (groups.length === 4 && easy < 2) warnings.push({ code: 'easy', text: `Only ${easy} of the 4 groups is an easy one (same team that season, same college, top-5 picks of one draft, teammates of a star, same country). Puzzles with 2 or more play better.` });
   const ranked = groups.filter((g) => g.cat).slice().sort((a, b) => a.score - b.score);
   ranked.forEach((g, i) => { g.color = COLORS[i] || null; });
   const mean = ranked.reduce((s, g) => s + g.score, 0) / (ranked.length || 1);
   const score = Math.round(mean + 2 * Math.min(decoys.length, 8));
-  // Near the quartiles of data-built puzzles (Nov 13, 2026); to recalibrate
-  // from real solve rates.
-  const label = score < 57 ? 'Easy' : score < 65 ? 'Medium' : score < 73 ? 'Hard' : 'Expert';
+  // Recalibrated Nov 13, 2026 (Jorge: a Medium must play like a Medium):
+  // a puzzle with any hard group is Hard at least, and one with 2+ hard
+  // groups is Expert; otherwise the score decides. To tune from real solve
+  // rates.
+  const hard = groups.filter((g) => g.tier === 'hard').length;
+  let label = score < 40 ? 'Easy' : score < 52 ? 'Medium' : score < 64 ? 'Hard' : 'Expert';
+  if (hard >= 2) label = 'Expert';
+  else if (hard === 1 && (label === 'Easy' || label === 'Medium')) label = 'Hard';
   return {
     ok: errors.length === 0, errors, warnings,
     decoys: decoys.map(({ set, labels, ...d }) => ({ ...d, label: labels.find((l) => !/^Played for the \d{4}-\d{2} /.test(l)) || labels[0] })),
     groups: ranked.map(({ cat, ...g }) => g),
-    difficulty: { score, label },
+    difficulty: { score, label, easy, hard },
   };
 }
 
@@ -284,13 +354,17 @@ export function suggest(C, ids, { limit = 30, exclude = [] } = {}) {
   for (const key of catsOf.get(ids[0]) || []) {
     if (exclude.includes(key)) continue;
     const c = cats.get(key);
-    if (c.type === 'club') continue;
+    if (c.type === 'club' || c.ambiguous) continue;
     if (!ids.every((id) => fit(c, id).ok)) continue;
     let pool = 0;
     for (const id of c.members.keys()) if (usable(players.get(id)) && fit(c, id).ok) pool++;
-    if (pool >= 4) out.push({ key, label: c.label, type: c.type, pool });
+    const ys = ids.map((id) => fit(c, id).ev.y).sort((a, b) => a - b);
+    const tier = tierOf(c.type, ys[Math.floor((ys.length - 1) / 2)]);
+    if (pool >= 4) out.push({ key, label: c.label, type: c.type, pool, tier });
   }
-  return out.sort((a, b) => a.pool - b.pool).slice(0, limit);
+  // Easy links first, then medium, then hard (Jorge, Nov 13, 2026); smaller pools first within a tier.
+  const T = { easy: 0, medium: 1, hard: 2 };
+  return out.sort((a, b) => T[a.tier] - T[b.tier] || a.pool - b.pool).slice(0, limit);
 }
 // Players who could complete a group, most known first.
 export function candidates(C, key, { not = [], limit = 40 } = {}) {
@@ -329,33 +403,50 @@ const pickWeighted = (rand, items, w) => {
   return items[items.length - 1];
 };
 
-const poolCache = new WeakMap();
-function pools(C) {
-  if (poolCache.has(C)) return poolCache.get(C);
+// Daily players: well known (fame 10+ or 500+ games, or a current player
+// with 150+ games).
+export const dailyPlayable = (p) => playable(p) && (p.fame >= 10 || p.g >= 500 || (p.last >= 2026 && p.g >= 150));
+
+const poolCache = new Map();
+function pools(C, mode) {
+  const ck = C.asOf + '|' + C.cats.size + '|' + mode;
+  if (poolCache.get(ck)?.C === C) return poolCache.get(ck).out;
   const out = [];
+  const ok = mode === 'hard' ? playable : dailyPlayable;
   for (const c of C.cats.values()) {
-    if (!(TYPE_WEIGHT[c.type] > 0)) continue;
+    if (!(TYPE_WEIGHT[c.type] > 0) || c.ambiguous) continue;
+    if (mode !== 'hard' && !(DAILY_WEIGHT[c.type] > 0)) continue;
     const ids = [];
-    for (const id of c.members.keys()) if (playable(C.players.get(id)) && fit(c, id).ok) ids.push(id);
-    if (ids.length < 4 || ids.length > 120) continue;
+    for (const id of c.members.keys()) if (ok(C.players.get(id)) && fit(c, id).ok) ids.push(id);
+    if (ids.length < 4 || ids.length > (mode === 'hard' ? 120 : 400)) continue;
     const ys = ids.map((id) => fit(c, id).ev.y).sort((a, b) => a - b);
     out.push({ key: c.key, type: c.type, ids, recent: ys[Math.floor(ys.length / 2)] >= RECENT_SEASON || ys.filter((y) => y >= RECENT_SEASON).length >= 4 });
   }
-  poolCache.set(C, out);
+  poolCache.set(ck, { C, out });
   return out;
 }
 
-export function generatePuzzle(C, seed, { tries = 4000 } = {}) {
+// generatePuzzle(C, seed, { mode }):
+//   'daily' (default; Dailies and Easy/Medium practice): easy and medium
+//           groups only, 2+ easy, well-known players, at least 12 of the 16
+//           tiles about 2010-11 or later, and the result rated Easy or Medium;
+//   'hard'  (Hard practice): every kind, the earlier generator.
+export function generatePuzzle(C, seed, { tries = 12000, mode = 'daily' } = {}) {
   const rand = rng(seed);
   const { cats, players } = C;
+  const daily = mode !== 'hard';
+  const W = daily ? DAILY_WEIGHT : TYPE_WEIGHT;
   const byType = {};
-  for (const p of pools(C)) (byType[p.type] ??= []).push(p);
+  for (const p of pools(C, mode)) (byType[p.type] ??= []).push(p);
   const types = Object.keys(byType);
+  const easyTypes = types.filter((x) => TIER[x] === 'easy');
   for (let t = 1; t <= tries; t++) {
     const kinds = [];
     while (kinds.length < 4) {
-      const opts = types.filter((x) => !kinds.includes(x) && !(BIRTH.has(x) && kinds.some((y) => BIRTH.has(y))));
-      kinds.push(pickWeighted(rand, opts, (x) => TYPE_WEIGHT[x] ?? 1));
+      // Daily: the first two kinds are easy ones; roster may repeat (two different team-seasons).
+      const from = daily && kinds.length < 2 ? easyTypes : types;
+      const opts = from.filter((x) => (!kinds.includes(x) || (daily && x === 'roster' && kinds.filter((y) => y === 'roster').length < 2)) && !(BIRTH.has(x) && kinds.some((y) => BIRTH.has(y))));
+      kinds.push(pickWeighted(rand, opts, (x) => W[x] ?? 1));
     }
     const chosen = [], used = new Set();
     let fail = false;
@@ -363,11 +454,14 @@ export function generatePuzzle(C, seed, { tries = 4000 } = {}) {
       const needRecent = chosen.filter((c) => c.recent).length + (4 - i) <= 2;
       const opts = byType[kinds[i]].filter((p) => (!needRecent || p.recent) && !chosen.some((c) => c.key === p.key));
       if (!opts.length) { fail = true; break; }
-      const pool = opts[Math.floor(rand() * opts.length)];
+      // Daily easy kinds: recent pools (a team-season from 2010-11 on, a recent draft).
+      const opts2 = daily && TIER[kinds[i]] === 'easy' ? opts.filter((p) => p.recent) : opts;
+      if (!opts2.length) { fail = true; break; }
+      const pool = opts2[Math.floor(rand() * opts2.length)];
       const cat = cats.get(pool.key);
       if (chosen.some((c) => c.ids.some((x) => cat.members.has(x)))) { fail = true; break; }
       const left = pool.ids.filter((id) => !used.has(id) && !chosen.some((c) => cats.get(c.key).members.has(id)));
-      const w = (id) => (1 + Math.min(players.get(id).fame, 40) / 10) * (pool.recent && fit(cat, id).ev.y >= RECENT_SEASON ? 3 : 1);
+      const w = (id) => (1 + Math.min(players.get(id).fame, 40) / (daily ? 4 : 10)) * (pool.recent && fit(cat, id).ev.y >= RECENT_SEASON ? 3 : 1);
       const ids = [];
       while (ids.length < 4 && left.length) {
         const id = pickWeighted(rand, left, w);
@@ -380,7 +474,13 @@ export function generatePuzzle(C, seed, { tries = 4000 } = {}) {
     }
     if (fail) continue;
     const res = checkPuzzle(C, { groups: chosen.map(({ key, ids }) => ({ key, ids })) });
-    if (res.ok) return { ...res, seed, tries: t };
+    if (!res.ok) continue;
+    if (daily) {
+      if (res.difficulty.easy < 2 || res.difficulty.hard > 0 || !['Easy', 'Medium'].includes(res.difficulty.label)) continue;
+      const recentTiles = res.groups.reduce((n, g) => n + g.ids.filter((id) => g.why[id].y >= RECENT_SEASON).length, 0);
+      if (recentTiles < 12) continue;
+    }
+    return { ...res, seed, tries: t, mode };
   }
   return null;
 }

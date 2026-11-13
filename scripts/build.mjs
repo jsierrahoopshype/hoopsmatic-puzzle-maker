@@ -6,7 +6,9 @@
 // Existing locks are never rewritten (a published day stays as it was).
 // Each day's puzzle comes from a random seed that is never stored, so the
 // public data and code can't be used to work out a coming Daily. No group
-// repeats within 30 days of the same build.
+// repeats within 7 days of the same build when it can be helped. Dailies use core.js's 'daily'
+// mode: easy and medium groups only, 2+ easy, well-known recent players,
+// rated Easy or Medium (Jorge, Nov 13, 2026).
 //   node scripts/pull-data.mjs && node scripts/build.mjs
 import { mkdirSync, writeFileSync, existsSync, readFileSync } from 'node:fs';
 import { randomBytes } from 'node:crypto';
@@ -34,19 +36,28 @@ for (let i = 0; i < total; i++) {
   const date = new Date(startMs + i * 86400000).toISOString().slice(0, 10);
   const file = `${ROOT}public/daily/${date}.lock`;
   if (existsSync(file)) continue;
-  let r = null;
-  for (let k = 0; k < 50 && !r; k++) {
+  // No group used in the last 7 days; failing that after 10 tries, the try
+  // with the fewest repeats.
+  let r = null, best = null;
+  for (let k = 0; k < 10 && !r; k++) {
     const x = generatePuzzle(C, randomBytes(12).toString('base64url'));
-    if (x && !x.groups.some((g) => recent.includes(g.key))) r = x;
+    if (!x) continue;
+    const rep = x.groups.filter((g) => recent.includes(g.key)).length;
+    if (rep === 0) r = x;
+    else if (!best || rep < best.rep) best = { x, rep };
   }
+  r = r || (best && best.x);
   if (!r) throw new Error('no puzzle for ' + date);
   recent.push(...r.groups.map((g) => g.key));
-  while (recent.length > 120) recent.shift();
+  while (recent.length > 28) recent.shift();
   const ids = r.groups.flatMap((g) => g.ids);
   const players = Object.fromEntries(ids.map((id) => { const p = C.players.get(id); return [id, [p.name, p.head, p.link]]; }));
   const plain = { v: 1, game: 'puzzle-maker', date, asOf: data.asOf, difficulty: r.difficulty, tiles: boardOrder(ids, randomBytes(8).toString('hex')), players,
     groups: r.groups.map((g) => ({ key: g.key, label: g.label, color: g.color, ids: g.ids, why: Object.fromEntries(g.ids.map((id) => [id, g.why[id].why])) })) };
   writeFileSync(file, JSON.stringify(await lock(plain, pub)) + '\n');
+  // The answers stay out of git: a local copy only (.cache is gitignored).
+  mkdirSync(ROOT + '.cache/daily-plain', { recursive: true });
+  writeFileSync(`${ROOT}.cache/daily-plain/${date}.json`, JSON.stringify(plain));
   made++;
 }
 console.log(`daily locks: ${made} new (key ${pub.kid})`);
