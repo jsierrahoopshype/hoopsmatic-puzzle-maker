@@ -31,7 +31,6 @@ button { font: inherit; color: inherit; }
 .top { text-align: center; margin: 6px 0 14px; }
 .logo { font-family: var(--oswald); font-size: 40px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; line-height: 1.1; margin: 0;
   background: linear-gradient(90deg, var(--orange), var(--gold)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: var(--gold); }
-.tag { margin: 4px 0 0; font-family: var(--oswald); letter-spacing: 2px; text-transform: uppercase; color: var(--text2); font-size: 13px; }
 .sub { margin: 6px 0 0; color: var(--muted); font-size: 13px; }
 
 .panel { background: linear-gradient(135deg, var(--panel-a) 0%, var(--panel-b) 100%); border: 1px solid var(--line); border-radius: 12px; padding: 18px; margin: 0 0 14px; }
