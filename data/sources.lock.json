@@ -5,14 +5,14 @@
    "id": "facts",
    "repo": "jsierrahoopshype/hoopsmatic-deep-cut",
    "path": "data/facts.json",
-   "commit": "666d24fb33b2a9f58d8d6eb27146b2aad224ea52",
+   "commit": "34a2a7949e65158178b87b80b9659e5b1d4628be",
    "sha256": "b41457962b959509ed953ded1858e660bb7041b8475c2a44a2ab3fbb25afe481"
   },
   {
    "id": "players",
    "repo": "jsierrahoopshype/hoopsmatic-deep-cut",
    "path": "public/players.json",
-   "commit": "666d24fb33b2a9f58d8d6eb27146b2aad224ea52",
+   "commit": "34a2a7949e65158178b87b80b9659e5b1d4628be",
    "sha256": "fc6e8c55e906c539696dca836040441187d01909688cc47cb8e30487de16b101"
   }
  ]
