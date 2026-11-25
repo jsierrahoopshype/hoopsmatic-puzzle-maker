@@ -511,7 +511,7 @@ export function judge(groups, solved, ids) {
   return { away: best };
 }
 
-// Connections-style share squares: one row per guess, a square per tile in
+// Share squares: one row per guess, a square per tile in
 // the color of the group it belongs to.
 export const SQUARES = { yellow: '\u{1F7E8}', green: '\u{1F7E9}', blue: '\u{1F7E6}', purple: '\u{1F7EA}' };
 export function shareGrid(groups, guesses) {
