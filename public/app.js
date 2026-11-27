@@ -35,7 +35,8 @@ async function api(path, body) {
 // The headshot frame, the same everywhere: a light-grey panel with the
 // NBA.com cutout bottom-aligned at one fixed aspect (260x190), so every player
 // shows head to shoulders at the same scale and nothing is cut at the top.
-// With no photo (or one that fails to load) the frame holds the name instead:
+// With no photo (or one that fails to load, which includes NBA.com's grey
+// silhouette: a 404 from hoopsmatic.com/img/nba-cdn/) the frame holds the name instead:
 // never initials, never an empty circle.
 function frame(head, name, cls) {
   const box = el('span', 'ph' + (cls ? ' ' + cls : ''));
